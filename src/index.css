@@ -1,0 +1,32 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0D1117;
+  --bg-card: #161B22;
+  --bg-card-hover: #1C2330;
+  --border: rgba(255,255,255,0.08);
+  --text: #F0F4FF;
+  --text-muted: #8B92A5;
+  --accent: #6366F1;
+  --accent-light: #818CF8;
+  --accent-glow: rgba(99,102,241,0.15);
+  --green: #34D399;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
