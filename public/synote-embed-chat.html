@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synote — Chat with Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+  :root{
+    --ink:#1b2a26;--muted:#9aa7a2;--box:#ffffff;--line:#e6ecea;
+    --accent:#34e2c4;--accent-2:#12bfa1;--accent-3:#0c9d84;
+    --accent-soft:#34e2c433;--accent-glow:#34e2c4cc;
+    --screen-bg:#edf0f2;--canvas-w:810px;--canvas-h:1440px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{width:100%;height:100%;overflow:hidden;background:transparent;}
+  body{width:100%;height:100%;overflow:hidden;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Plus Jakarta Sans",sans-serif;color:var(--ink);}
+  .canvas{position:relative;width:var(--canvas-w);height:var(--canvas-h);
+    overflow:hidden;flex-shrink:0;transform-origin:top left;transform:scale(.5);}
+  .canvas-shell{position:relative;overflow:hidden;flex-shrink:0;width:405px;height:720px;
+    border-radius:3px;box-shadow:0 20px 70px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.24);}
+  .preview-wrapper{display:flex;flex-direction:column;align-items:center;}
+  .scale-bar{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.93);
+    border:1px solid rgba(0,0,0,.09);border-radius:12px;padding:7px 13px;margin-bottom:8px;
+    backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,.22);
+    font-family:"Plus Jakarta Sans",sans-serif;font-size:12px;color:#1b2a26;user-select:none;}
+  .scale-bar-label{font-weight:700;color:#5f6b66;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;}
+  .scale-slider{width:110px;height:3px;border-radius:2px;
+    background:linear-gradient(90deg,var(--accent-2),var(--accent-3));
+    cursor:pointer;outline:none;-webkit-appearance:none;appearance:none;}
+  .scale-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+    background:var(--accent-2);box-shadow:0 2px 6px rgba(18,191,161,.55);cursor:pointer;}
+  .scale-pct{font-size:11px;font-weight:700;color:#1b2a26;min-width:32px;text-align:right;}
+  .scale-divider{width:1px;height:16px;background:rgba(0,0,0,.10);}
+  .scale-btn{font:600 11px "Plus Jakarta Sans",sans-serif;color:#46524d;background:#f1f4f3;
+    border:1px solid var(--line);border-radius:7px;padding:4px 9px;cursor:pointer;transition:.15s;}
+  .scale-btn:hover{border-color:var(--accent-2);color:var(--accent-3);}
+  .canvas-resize-handle{position:absolute;bottom:0;right:0;width:32px;height:32px;cursor:se-resize;
+    z-index:200;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px;opacity:0;transition:opacity .18s;}
+  .canvas-shell:hover .canvas-resize-handle{opacity:1;}
+  .controls{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.92);
+    border:1px solid var(--line);border-radius:14px;padding:8px 10px;
+    backdrop-filter:blur(6px);box-shadow:0 6px 20px -8px rgba(40,30,20,.35);margin-top:8px;}
+  .controls button,.controls label{font:inherit;font-size:13px;color:var(--ink);background:#f1f4f3;
+    border:1px solid var(--line);border-radius:9px;padding:8px 14px;cursor:pointer;
+    display:flex;align-items:center;gap:7px;transition:.15s;}
+  .controls button:hover{border-color:var(--accent-2);color:var(--accent-3);}
+  .controls .play{background:var(--accent-2);color:#fff;border-color:var(--accent-2);font-weight:700;}
+  .controls input{accent-color:var(--accent-2);}
+  body.recording .controls,.recording .scale-bar{display:none;}
+  .page-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;display:none!important;}
+  .base{position:absolute;inset:0;background:linear-gradient(165deg,#c4c6d2 0%,#ccc7ce 38%,#e6b594 76%,#ef9d6c 100%);}
+  .grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");}
+  .stage{position:absolute;inset:0;z-index:2;}
+  .phone{--w:388px;--h:690px;position:absolute;left:50%;top:50%;width:var(--w);height:var(--h);
+    transform:translate(-50%,-50%) scale(1.512);will-change:transform;}
+  .phone .frame{position:absolute;inset:0;border-radius:46px;background:#0c0f0e;
+    box-shadow:0 38px 80px -30px rgba(30,22,14,.55),0 3px 10px rgba(30,22,14,.22),inset 0 0 0 1px #30403c;}
+  .phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);
+    width:78px;height:19px;background:#0c0f0e;border-radius:0 0 13px 13px;z-index:6;}
+  .phone .screen{position:absolute;inset:5px;border-radius:42px;overflow:hidden;}
+  .screen-bg{position:absolute;inset:0;background:var(--screen-bg);z-index:0;}
+
+  .chat-screen{position:absolute;inset:0;z-index:2;font-family:"Plus Jakarta Sans",sans-serif;}
+
+  .chat-hdr{display:flex;align-items:center;gap:10px;padding:32px 14px 11px;flex-shrink:0;
+    opacity:0;transform:translateY(-8px);transition:opacity .4s ease,transform .4s ease;}
+  .chat-hdr.in{opacity:1;transform:translateY(0);}
+  .chat-hdr-icon{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+    display:grid;place-items:center;color:#fff;box-shadow:0 4px 12px rgba(18,191,161,.4);}
+  .chat-hdr-icon svg{width:18px;height:18px;}
+  .chat-hdr-info{flex:1;min-width:0;}
+  .chat-hdr-title{font-size:13px;font-weight:700;color:var(--ink);}
+  .chat-hdr-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+  .chat-hdr-x{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.85);
+    border:1px solid var(--line);display:grid;place-items:center;font-size:11px;
+    color:var(--muted);cursor:pointer;flex-shrink:0;}
+
+  .chat-landing{position:absolute;inset:0;display:flex;flex-direction:column;
+    background:var(--screen-bg);border-radius:42px;overflow:hidden;z-index:2;
+    opacity:0;transition:opacity .5s ease,transform .5s ease;}
+  .chat-landing.visible{opacity:1;}
+  .chat-landing.leaving{opacity:0;transform:translateY(-14px) scale(.98);pointer-events:none;transition:opacity .45s ease,transform .45s cubic-bezier(.4,0,.6,1);}
+
+  .landing-body{flex:1;display:flex;flex-direction:column;padding:0 14px;overflow:hidden;}
+  .landing-q{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.4px;
+    text-align:center;padding:14px 6px 16px;
+    opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease;}
+  .landing-q.in{opacity:1;transform:translateY(0);}
+  .sugg-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;flex:1;padding-bottom:6px;align-content:start;}
+  .sugg-tile{background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:14px 13px;min-height:108px;display:flex;flex-direction:column;justify-content:space-between;gap:9px;cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);
+    opacity:0;transform:translateY(10px) scale(.93);
+    transition:opacity .35s cubic-bezier(.22,1,.36,1),transform .35s cubic-bezier(.22,1,.36,1);}
+  .sugg-tile.in{opacity:1;transform:translateY(0) scale(1);}
+  .sugg-tile.tapping{transform:scale(.89)!important;transition:transform .1s ease!important;background:#f5faf9;}
+  .sugg-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;}
+  .sugg-icon svg{width:17px;height:17px;}
+  .sugg-text{font-size:12px;font-weight:600;color:var(--ink);line-height:1.4;}
+
+  .chat-input-wrap{padding:8px 12px 14px;flex-shrink:0;
+    opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease;}
+  .chat-input-wrap.in,.chat-input-wrap.always{opacity:1;transform:translateY(0);}
+  .chat-inputbar{display:flex;align-items:center;gap:8px;background:#fff;
+    border:1.5px solid var(--line);border-radius:22px;padding:9px 9px 9px 13px;
+    box-shadow:0 4px 16px rgba(0,0,0,.09);
+    transition:border-color .2s ease,box-shadow .2s ease;}
+  .chat-inputbar.live{border-color:var(--accent-2);
+    box-shadow:0 0 0 3px var(--accent-soft),0 4px 16px rgba(0,0,0,.09);}
+  .ci-field{flex:1;min-width:0;font-size:12px;color:var(--ink);overflow:hidden;
+    white-space:nowrap;position:relative;display:flex;align-items:center;height:20px;}
+  .ci-ph{color:var(--muted);transition:opacity .15s ease;pointer-events:none;
+    position:absolute;left:0;top:50%;transform:translateY(-50%);white-space:nowrap;}
+  .ci-typed{display:inline-flex;align-items:center;gap:0;flex-wrap:nowrap;}
+  .ci-caret{display:inline-block;width:2px;height:14px;background:var(--accent-2);
+    vertical-align:-2px;margin-left:1px;opacity:0;flex-shrink:0;}
+  .ci-caret.on{animation:ciBlink 1s steps(1) infinite;}
+  @keyframes ciBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+  .ci-tw{display:inline-block;opacity:0;transform:translateY(.45em);
+    animation:ciWrd .28s cubic-bezier(.22,1,.36,1) both;white-space:pre;}
+  @keyframes ciWrd{from{opacity:0;transform:translateY(.45em);}to{opacity:1;transform:translateY(0);}}
+  .ci-mic{width:28px;height:28px;border-radius:50%;background:#f1f4f3;border:1px solid var(--line);
+    display:grid;place-items:center;color:var(--muted);flex-shrink:0;
+    position:relative;overflow:hidden;cursor:pointer;outline:none;
+    transition:background .2s,color .2s,border-color .2s,transform .12s;}
+  .ci-mic svg{width:14px;height:14px;position:relative;z-index:1;}
+  .ci-mic.pressed{transform:scale(.8);}
+  .ci-mic.live{color:#fff;background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+    border-color:transparent;animation:ciPulse 1.8s ease-out infinite;}
+  @keyframes ciPulse{
+    0%{box-shadow:0 0 0 0 var(--accent-glow);}
+    70%{box-shadow:0 0 0 8px transparent;}
+    100%{box-shadow:0 0 0 0 transparent;}}
+  .ci-send{width:28px;height:28px;border-radius:50%;background:#e8edec;
+    border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);
+    flex-shrink:0;position:relative;overflow:hidden;cursor:pointer;outline:none;
+    transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .1s;}
+  .ci-send svg{width:13px;height:13px;position:relative;z-index:1;}
+  .ci-send.ready{background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+    color:#fff;border-color:transparent;box-shadow:0 4px 10px var(--accent-glow);}
+  .ci-send.pressed{transform:scale(.82);}
+  .ci-ripple{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    opacity:0;transform:scale(.3);
+    background:radial-gradient(circle,rgba(18,191,161,.6) 0%,rgba(18,191,161,.3) 55%,transparent 72%);}
+  .ci-ripple.go{animation:ciRpl .55s ease-out;}
+  @keyframes ciRpl{0%{opacity:.8;transform:scale(.3);}100%{opacity:0;transform:scale(2.8);}}
+
+  .chat-convo{position:absolute;inset:0;display:flex;flex-direction:column;
+    background:var(--screen-bg);border-radius:42px;overflow:hidden;z-index:1;
+    opacity:0;transform:translateY(18px);
+    transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1);
+    pointer-events:none;}
+  .chat-convo.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:3;}
+  .conv-hdr{display:flex;align-items:center;gap:9px;padding:30px 13px 10px;flex-shrink:0;
+    background:rgba(237,240,242,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .conv-hdr-icon{width:30px;height:30px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+    display:grid;place-items:center;color:#fff;}
+  .conv-hdr-icon svg{width:15px;height:15px;}
+  .conv-hdr-title{font-size:12px;font-weight:700;color:var(--ink);flex:1;}
+  .conv-hdr-sub{font-size:9.5px;color:var(--muted);}
+  .conv-hdr-x{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.85);
+    border:1px solid var(--line);display:grid;place-items:center;font-size:10px;color:var(--muted);}
+
+  /* Bottom-anchored, like the original working version: content sits at the
+     bottom and new messages push older ones up. No scrolling involved, so the
+     premature-scroll bug simply cannot occur. */
+  .conv-msgs{flex:1;overflow:hidden;padding:12px 12px 12px;
+    display:flex;flex-direction:column;justify-content:flex-start;gap:10px;}
+  .conv-msgs::-webkit-scrollbar{display:none;}
+  /* fade-out applied to a finished turn before the next one begins */
+  .conv-msgs .leaving{opacity:0!important;transform:translateY(-12px)!important;
+    transition:opacity .4s ease,transform .4s ease!important;pointer-events:none;}
+
+  .msg-user{align-self:flex-end;max-width:82%;
+    background:linear-gradient(135deg,var(--accent-2),var(--accent-3));color:#fff;
+    padding:9px 13px;border-radius:16px;border-bottom-right-radius:5px;
+    font-size:11.5px;line-height:1.45;box-shadow:0 8px 20px -10px var(--accent-glow);
+    opacity:0;transform:translateY(8px) scale(.96);
+    transition:opacity .38s ease,transform .38s cubic-bezier(.22,1,.36,1);}
+  .msg-user.show{opacity:1;transform:translateY(0) scale(1);}
+  .ai-wrap{align-self:flex-start;max-width:95%;display:flex;flex-direction:column;gap:6px;}
+  .ai-bbl{background:#fff;border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:5px;
+    padding:9px 12px;font-size:11.5px;line-height:1.48;color:var(--ink);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease;}
+  .ai-bbl.show{opacity:1;transform:translateY(0);}
+  .ai-bbl .hl{color:var(--accent-2);font-weight:700;}
+
+  .typing-ind{align-self:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:16px;border-bottom-left-radius:5px;padding:10px 14px;
+    display:flex;align-items:center;gap:5px;box-shadow:0 3px 12px rgba(0,0,0,.08);
+    opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;}
+  .typing-ind.show{opacity:1;transform:translateY(0);}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);
+    animation:dotP 1.4s ease-in-out infinite;}
+  .dot:nth-child(2){animation-delay:.2s;}
+  .dot:nth-child(3){animation-delay:.4s;}
+  @keyframes dotP{0%,60%,100%{transform:scale(.72);opacity:.4;}30%{transform:scale(1);opacity:1;}}
+
+  .ev-card{background:#fff;border-radius:12px;border-left:3px solid #ccc;
+    padding:9px 11px 8px;box-shadow:0 3px 10px rgba(0,0,0,.08);
+    opacity:0;transform:translateX(-8px);
+    transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1);position:relative;}
+  .ev-card.show{opacity:1;transform:translateX(0);}
+  .ev-cat{font-size:8px;font-weight:700;letter-spacing:.5px;position:absolute;top:8px;right:9px;}
+  .ev-name{font-size:11.5px;font-weight:700;color:var(--ink);margin-bottom:5px;padding-right:48px;}
+  .ev-row{display:flex;align-items:center;gap:5px;font-size:9.5px;color:var(--muted);margin-bottom:2px;}
+  .ev-row svg{width:10px;height:10px;flex-shrink:0;}
+  .ev-time{color:var(--accent-2);font-weight:600;}
+  .ev-loc{color:var(--muted);}
+  .ev-badge{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:600;
+    color:var(--accent-3);margin-top:4px;}
+  .ev-badge::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent-2);}
+
+  .reschedule-card{background:rgba(18,191,161,.07);border:1px solid rgba(18,191,161,.25);
+    border-radius:12px;padding:10px 12px;box-shadow:0 3px 10px rgba(18,191,161,.12);
+    opacity:0;transform:translateX(-8px);
+    transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1);}
+  .reschedule-card.show{opacity:1;transform:translateX(0);}
+  .rs-badge{font-size:8px;font-weight:700;letter-spacing:.5px;color:var(--accent-3);
+    margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+  .rs-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:7px;}
+  .rs-from{font-size:10.5px;color:var(--muted);text-decoration:line-through;margin-bottom:5px;}
+  .rs-to{font-size:11px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;gap:5px;}
+
+  .cancel-card{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);
+    border-radius:12px;padding:10px 12px;
+    opacity:0;transform:translateX(-8px);
+    transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1);}
+  .cancel-card.show{opacity:1;transform:translateX(0);}
+  .cc-badge{font-size:8px;font-weight:700;letter-spacing:.5px;color:#ef4444;
+    margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+  .cc-name{font-size:12px;font-weight:700;color:var(--muted);text-decoration:line-through;margin-bottom:4px;}
+  .cc-date{font-size:10px;color:var(--muted);}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="preview-wrapper" id="previewWrapper">
+
+  <div class="scale-bar" id="scaleBar">
+    <span class="scale-bar-label">Zoom</span>
+    <input type="range" class="scale-slider" id="scaleSlider" min="20" max="100" value="50">
+    <span class="scale-pct" id="scalePct">50%</span>
+    <span class="scale-divider"></span>
+    <button class="scale-btn" id="scaleFit">Fit</button>
+    <button class="scale-btn" id="scale100">100%</button>
+  </div>
+
+  <div class="canvas-shell" id="canvasShell">
+  <div class="canvas">
+
+  <div class="page-bg"><div class="base"></div></div>
+  <div class="grain"></div>
+
+  <div class="stage">
+  <div class="phone" id="phone">
+    <div class="frame"></div>
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="screen-bg"></div>
+
+      <div class="chat-screen">
+
+        <!-- LANDING VIEW -->
+        <div class="chat-landing" id="chatLanding">
+          <div class="chat-hdr" id="chatHdr">
+            <div class="chat-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div class="chat-hdr-info">
+              <div class="chat-hdr-title">Ask about your notes</div>
+              <div class="chat-hdr-sub">111 items in memory</div>
+            </div>
+            <div class="chat-hdr-x">✕</div>
+          </div>
+
+          <div class="landing-body">
+            <div class="landing-q" id="landingQ">What would you like to know?</div>
+            <div class="sugg-grid" id="suggGrid">
+              <div class="sugg-tile" id="st0">
+                <div class="sugg-icon" style="background:rgba(99,102,241,.12);color:#6366f1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                <span class="sugg-text">What's on my schedule this week?</span>
+              </div>
+              <div class="sugg-tile" id="st1">
+                <div class="sugg-icon" style="background:rgba(249,115,22,.12);color:#f97316"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                <span class="sugg-text">Do I have any conflicts?</span>
+              </div>
+              <div class="sugg-tile" id="st2">
+                <div class="sugg-icon" style="background:rgba(14,165,233,.12);color:#0ea5e9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="9"/><line x1="18" y1="20" x2="18" y2="4"/></svg></div>
+                <span class="sugg-text">Show my busiest day this month</span>
+              </div>
+              <div class="sugg-tile" id="st3">
+                <div class="sugg-icon" style="background:rgba(16,185,129,.12);color:#10b981"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <span class="sugg-text">What tasks are still pending?</span>
+              </div>
+              <div class="sugg-tile" id="st4">
+                <div class="sugg-icon" style="background:rgba(236,72,153,.12);color:#ec4899"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M3.5 12h3l1.5-3 2.5 6 1.5-3h3" stroke-width="1.6"/></svg></div>
+                <span class="sugg-text">Show my health events</span>
+              </div>
+              <div class="sugg-tile" id="st5">
+                <div class="sugg-icon" style="background:rgba(245,158,11,.12);color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></div>
+                <span class="sugg-text">Any advice on my schedule?</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-wrap" id="landInputWrap">
+            <div class="chat-inputbar">
+              <span class="ci-ph">Ask about your notes and events...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONVERSATION VIEW -->
+        <div class="chat-convo" id="chatConvo">
+          <div class="conv-hdr">
+            <div class="conv-hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+            <div style="flex:1;min-width:0">
+              <div class="conv-hdr-title">Ask about your notes</div>
+              <div class="conv-hdr-sub">111 items in memory</div>
+            </div>
+            <div class="conv-hdr-x">✕</div>
+          </div>
+
+          <div class="conv-msgs" id="convMsgs">
+            <div class="typing-ind" id="typInd">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+
+            <!-- Turn 1: schedule -->
+            <div class="msg-user" id="u1">What's on my schedule this week?</div>
+            <div class="ai-wrap" id="w1">
+              <div class="ai-bbl" id="a1">Here's what's on your <span class="hl">schedule this week</span>:</div>
+              <div class="ev-card" id="c1a" style="border-left-color:#059669">
+                <span class="ev-cat" style="color:#059669">HEALTH</span>
+                <div class="ev-name">Gym Workout</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Mon – Fri · Recurring</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">7:00 – 8:00 AM</span></div>
+                <div class="ev-badge">Upcoming</div>
+              </div>
+              <div class="ev-card" id="c1b" style="border-left-color:#ea580c">
+                <span class="ev-cat" style="color:#ea580c">SPORT</span>
+                <div class="ev-name">Basketball Practice</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Tue &amp; Thu · Oak Bay Rec</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">6:30 – 8:00 PM</span></div>
+                <div class="ev-badge">Upcoming</div>
+              </div>
+              <div class="ev-card" id="c1c" style="border-left-color:#4f46e5">
+                <span class="ev-cat" style="color:#4f46e5">WORK</span>
+                <div class="ev-name">Submit Work Report</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Every Friday</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">4:00 – 4:30 PM</span></div>
+                <div class="ev-badge">Upcoming</div>
+              </div>
+            </div>
+
+            <!-- Turn 2: medicine -->
+            <div class="msg-user" id="u2">When should I take my medicine?</div>
+            <div class="ai-wrap" id="w2">
+              <div class="ai-bbl" id="a2">You have <span class="hl">2 medication reminders</span> set:</div>
+              <div class="ev-card" id="c2a" style="border-left-color:#059669">
+                <span class="ev-cat" style="color:#059669">HEALTH</span>
+                <div class="ev-name">Daily Vitamins 💊</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Every Morning</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">8:00 AM</span></div>
+                <div class="ev-badge">Reminder set</div>
+              </div>
+              <div class="ev-card" id="c2b" style="border-left-color:#ef4444">
+                <span class="ev-cat" style="color:#ef4444">HEALTH</span>
+                <div class="ev-name">Blood Pressure Medication</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Every Day</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">9:00 AM &amp; 9:00 PM</span></div>
+                <div class="ev-badge">Reminder set</div>
+              </div>
+            </div>
+
+            <!-- Turn 3: Alex -->
+            <div class="msg-user" id="u3">When is my meeting with Alex?</div>
+            <div class="ai-wrap" id="w3">
+              <div class="ai-bbl" id="a3">Found <span class="hl">1 meeting</span> with Alex:</div>
+              <div class="ev-card" id="c3a" style="border-left-color:#5b4fd6">
+                <span class="ev-cat" style="color:#5b4fd6">WORK</span>
+                <div class="ev-name">Project Review w/ Alex</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Fri, Jun 13</div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7.6V12l3 2"/></svg><span class="ev-time">2:00 – 3:00 PM</span></div>
+                <div class="ev-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="ev-loc">Victoria Office</span></div>
+                <div class="ev-badge">Upcoming</div>
+              </div>
+            </div>
+
+            <!-- Turn 4: reschedule -->
+            <div class="msg-user" id="u4">Reschedule dentist to Mon Jun 15</div>
+            <div class="ai-wrap" id="w4">
+              <div class="ai-bbl" id="a4">✅ Done! Appointment rescheduled:</div>
+              <div class="reschedule-card" id="c4">
+                <div class="rs-badge">✓ RESCHEDULED</div>
+                <div class="rs-name">Dentist Appointment</div>
+                <div class="rs-from">📅 Mon, Jun 8 · 2:00 – 3:00 PM</div>
+                <div class="rs-to">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="#12bfa1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Mon, Jun 15 · 2:00 – 3:00 PM
+                </div>
+              </div>
+            </div>
+
+            <!-- Turn 5: cancel -->
+            <div class="msg-user" id="u5">Cancel grocery shopping this Sat 🗑️</div>
+            <div class="ai-wrap" id="w5">
+              <div class="ai-bbl" id="a5">❌ Cancelled and removed from calendar:</div>
+              <div class="cancel-card" id="c5">
+                <div class="cc-badge">✕ CANCELLED</div>
+                <div class="cc-name">Grocery Shopping</div>
+                <div class="cc-date">📅 Sat, Jun 6 &nbsp;·&nbsp; 3:00 – 5:00 PM &nbsp;·&nbsp; Walmart</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="chat-input-wrap always">
+            <div class="chat-inputbar" id="chatInputBar">
+              <div class="ci-field">
+                <span class="ci-ph" id="ciPh">Ask about your notes and events...</span>
+                <span class="ci-typed" id="ciTyped"></span><span class="ci-caret" id="ciCaret"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+<script>
+(function(){
+  /* ── scale/resize ── */
+  const CANVAS_W=810,CANVAS_H=1440;
+  function initScale(){
+    const shell=document.getElementById('canvasShell'),
+          canvas=document.querySelector('.canvas'),
+          slider=document.getElementById('scaleSlider'),
+          pctEl=document.getElementById('scalePct'),
+          fitBtn=document.getElementById('scaleFit'),
+          fullBtn=document.getElementById('scale100');
+    if(!shell||!canvas||!slider)return;
+    function setScale(s){
+      s=Math.max(.2,Math.min(1,s));
+      shell.style.width=Math.round(CANVAS_W*s)+'px';
+      shell.style.height=Math.round(CANVAS_H*s)+'px';
+      canvas.style.transform='scale('+s+')';
+      slider.value=Math.round(s*100);
+      pctEl.textContent=Math.round(s*100)+'%';
+    }
+    function fit(){setScale(Math.min(window.innerWidth/CANVAS_W,window.innerHeight/CANVAS_H,1));}
+    fit();
+    slider.addEventListener('input',function(){setScale(this.value/100);});
+    fitBtn.addEventListener('click',fit);
+    fullBtn.addEventListener('click',function(){setScale(1);});
+    window.addEventListener('resize',fit);
+  }
+
+  /* ── core ── */
+  let timers=[],spd=1;
+  const tms=ms=>ms/spd;
+  function cS(ms,fn){timers.push(setTimeout(fn,tms(ms)));}
+  function clearAll(){timers.forEach(clearTimeout);timers=[];}
+  const g=id=>document.getElementById(id);
+
+  /* ── Input bar helpers ── */
+  function micPress(){const m=g('ciMic');if(m)m.classList.add('pressed');}
+  function micRelease(){const m=g('ciMic');if(m)m.classList.remove('pressed');}
+  function micLive(){
+    const m=g('ciMic'),bar=g('chatInputBar'),ph=g('ciPh'),c=g('ciCaret');
+    if(m)m.classList.add('live');
+    if(bar)bar.classList.add('live');
+    if(ph)ph.style.opacity='0';
+    if(c)c.classList.add('on');
+  }
+  function micOff(){
+    const m=g('ciMic'),bar=g('chatInputBar'),ph=g('ciPh'),c=g('ciCaret');
+    if(m)m.classList.remove('live','pressed');
+    if(bar)bar.classList.remove('live');
+    if(c)c.classList.remove('on');
+    if(ph)ph.style.opacity='';
+  }
+  function typeInput(text){
+    const typed=g('ciTyped');if(!typed)return;
+    const words=text.split(' '),stagger=52;
+    typed.innerHTML=words.map((w,i)=>
+      '<span class="ci-tw" style="animation-delay:'+(i*stagger/1000).toFixed(3)+'s">'+w+'</span>'
+    ).join('<span style="display:inline-block;width:4px"></span>');
+  }
+  function clearInput(){
+    const typed=g('ciTyped');if(typed)typed.innerHTML='';
+    const send=g('ciSend');if(send)send.classList.remove('ready','pressed');
+    micOff();
+  }
+  function sendReady(){const s=g('ciSend');if(s)s.classList.add('ready');const c=g('ciCaret');if(c)c.classList.remove('on');}
+  function sendPress(){
+    const s=g('ciSend'),r=g('ciSendRipple');
+    if(s)s.classList.add('pressed');
+    if(r){r.classList.remove('go');void r.offsetWidth;r.classList.add('go');}
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     CONVERSATION ENGINE  (ported from the original working version)
+
+     Key idea: the message list (.conv-msgs) is bottom-anchored
+     (justify-content:flex-end). Messages are revealed at the bottom and the
+     PREVIOUS turn is faded out before the next begins, so the visible content
+     always fits the screen and there is NOTHING to scroll. This removes the
+     entire class of premature-scroll bugs.
+
+     Un-shown nodes are display:none (so they take no layout space and never
+     anchor the wrong content), then displayed + transitioned in when revealed.
+     ════════════════════════════════════════════════════════════════════ */
+
+  const USERS=['u1','u2','u3','u4','u5'];
+  const WRAPS=['w1','w2','w3','w4','w5'];
+  const CARDS=['a1','c1a','c1b','c1c','a2','c2a','c2b','a3','c3a','a4','c4','a5','c5'];
+
+  /* reveal a node: take it out of display:none, force reflow, then transition in */
+  function reveal(id){
+    const e=g(id); if(!e)return;
+    e.style.display='';     // revert to stylesheet default
+    void e.offsetWidth;     // force reflow so the .show transition fires
+    e.classList.add('show');
+  }
+  function showWrap(id){ const e=g(id); if(e)e.style.display='flex'; }
+
+  /* fade a finished turn (user bubble + ai wrap) out, then remove from layout */
+  function hideTurn(userId, wrapId, cb){
+    const u=g(userId), w=g(wrapId);
+    if(u)u.classList.add('leaving');
+    if(w)w.classList.add('leaving');
+    cS(420,()=>{
+      if(u){ u.classList.remove('show','leaving'); u.style.display='none'; }
+      if(w){ w.classList.remove('leaving'); w.style.display='none';
+        w.querySelectorAll('.ai-bbl,.ev-card,.reschedule-card,.cancel-card')
+         .forEach(c=>c.classList.remove('show')); }
+      if(cb)cb();
+    });
+  }
+
+  /* thinking dots: appear under the current user msg, then disappear */
+  function showThinking(cb){
+    const e=g('typInd'), m=g('convMsgs');
+    if(!e){ if(cb)cb(); return; }
+    if(m)m.appendChild(e);          // sit at the bottom, just under the user bubble
+    e.style.display='flex';
+    void e.offsetWidth;
+    e.classList.add('show');
+    cS(1150,()=>{
+      e.classList.remove('show');
+      cS(230,()=>{ e.style.display='none'; if(cb)cb(); });
+    });
+  }
+
+  /* input bar: mic -> type words -> send, then run cb */
+  function typeAndSend(text, wc, cb){
+    micPress();
+    cS(150,()=>{ micRelease(); micLive(); typeInput(text); });
+    const settle = 150 + wc*52 + 220;
+    cS(settle,      sendReady);
+    cS(settle+280,  sendPress);
+    cS(settle+540,  ()=>{ clearInput(); if(cb)cb(); });
+  }
+
+  /* ── Reset ── */
+  function reset(){
+    clearAll();
+    g('chatLanding').classList.remove('visible','leaving');
+    g('chatConvo').classList.remove('active');
+    g('chatHdr').classList.remove('in');
+    g('landingQ').classList.remove('in');
+    g('landInputWrap').classList.remove('in');
+    document.querySelectorAll('.sugg-tile').forEach(t=>t.classList.remove('in','tapping'));
+    USERS.forEach(id=>{const e=g(id);if(e){e.classList.remove('show','leaving');e.style.display='none';}});
+    WRAPS.forEach(id=>{const e=g(id);if(e){e.classList.remove('leaving');e.style.display='none';}});
+    CARDS.forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+    const ti=g('typInd');if(ti){ti.classList.remove('show');ti.style.display='none';}
+    clearInput();
+  }
+
+  /* ── Turns (chained, each fades out before the next — like the original) ── */
+  function conv1(){
+    typeAndSend("What's on my schedule this week?", 6, ()=>{
+      reveal('u1');
+      cS(260,()=>showThinking(()=>{
+        showWrap('w1'); reveal('a1');
+        cS(240,()=>reveal('c1a'));
+        cS(470,()=>reveal('c1b'));
+        cS(700,()=>{ reveal('c1c'); cS(1900,()=>hideTurn('u1','w1',conv2)); });
+      }));
+    });
+  }
+  function conv2(){
+    typeAndSend("When should I take my medicine?", 7, ()=>{
+      reveal('u2');
+      cS(260,()=>showThinking(()=>{
+        showWrap('w2'); reveal('a2');
+        cS(240,()=>reveal('c2a'));
+        cS(470,()=>{ reveal('c2b'); cS(1900,()=>hideTurn('u2','w2',conv3)); });
+      }));
+    });
+  }
+  function conv3(){
+    typeAndSend("When is my meeting with Alex?", 6, ()=>{
+      reveal('u3');
+      cS(260,()=>showThinking(()=>{
+        showWrap('w3'); reveal('a3');
+        cS(280,()=>{ reveal('c3a'); cS(1900,()=>hideTurn('u3','w3',conv4)); });
+      }));
+    });
+  }
+  function conv4(){
+    typeAndSend("Reschedule dentist to Mon Jun 15", 6, ()=>{
+      reveal('u4');
+      cS(260,()=>showThinking(()=>{
+        showWrap('w4'); reveal('a4');
+        cS(280,()=>{ reveal('c4'); cS(1900,()=>hideTurn('u4','w4',conv5)); });
+      }));
+    });
+  }
+  function conv5(){
+    typeAndSend("Cancel grocery shopping this Sat", 5, ()=>{
+      reveal('u5');
+      cS(260,()=>showThinking(()=>{
+        showWrap('w5'); reveal('a5');
+        cS(280,()=>{ reveal('c5');
+          cS(2600,()=>{ const l=g('loop'); if(l&&l.checked) run(); });
+        });
+      }));
+    });
+  }
+
+  /* ── Main run ── */
+  function run(){
+    reset();
+    const tiles=document.querySelectorAll('.sugg-tile');
+
+    /* Landing intro */
+    cS(80,  ()=>g('chatLanding').classList.add('visible'));
+    cS(180, ()=>g('chatHdr').classList.add('in'));
+    cS(400, ()=>g('landingQ').classList.add('in'));
+    tiles.forEach((t,i)=>cS(570+i*85,()=>t.classList.add('in')));
+    cS(1100,()=>g('landInputWrap').classList.add('in'));
+
+    /* Tile tap -> transition into the conversation */
+    cS(2300,()=>tiles[0].classList.add('tapping'));
+    cS(2560,()=>tiles[0].classList.remove('tapping'));
+    cS(2820,()=>g('chatLanding').classList.add('leaving'));
+    cS(3130,()=>g('chatConvo').classList.add('active'));
+
+    /* Start the chained conversation */
+    cS(3300, conv1);
+  }
+
+  /* ── Controls ── */
+  function bindControls(){
+    const replay=g('replay'),speedBtn=g('speedBtn'),recBtn=g('recBtn');
+    if(!replay)return;
+    const speeds=[1,.75,.5,1.5];let si=0;
+    replay.addEventListener('click',run);
+    speedBtn.addEventListener('click',()=>{si=(si+1)%speeds.length;spd=speeds[si];speedBtn.textContent='Speed: '+spd+'×';});
+    recBtn.addEventListener('click',()=>document.body.classList.toggle('recording'));
+    document.addEventListener('keydown',e=>{
+      if(e.key==='r'||e.key==='R')document.body.classList.toggle('recording');
+      if(e.code==='Space'){e.preventDefault();run();}
+    });
+    // Embed defaults: recording on, speed 1x, auto-play
+    document.body.classList.add('recording');
+    spd=1;
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>{initScale();bindControls();setTimeout(run,400);});
+  }else{initScale();bindControls();setTimeout(run,400);}
+})();
+</script>
+
+  </div><!-- end canvas -->
+  <div class="canvas-resize-handle" id="canvasResizeHandle">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M1.5 11.5L11.5 1.5" stroke="rgba(27,42,38,.45)" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M5.5 11.5L11.5 5.5" stroke="rgba(27,42,38,.45)" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M9.5 11.5L11.5 9.5" stroke="rgba(27,42,38,.45)" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+  </div>
+  </div><!-- end canvas-shell -->
+
+  <div class="controls">
+    <button class="play" id="replay">▶ Play</button>
+    <label><input type="checkbox" id="loop" checked> Loop</label>
+    <button id="speedBtn">Speed: 1×</button>
+    <button id="recBtn">Recording mode (R)</button>
+  </div>
+
+</div>
+</body>
+</html>
