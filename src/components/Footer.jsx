@@ -1,5 +1,28 @@
 import { Link } from 'react-router-dom'
 
+const socials = [
+  {
+    label: 'TikTok',
+    href: 'https://www.tiktok.com/@synoteai?is_from_webapp=1&sender_device=pc',
+    icon: 'fa-tiktok',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://youtube.com/@synote_ai?si=hgiyeFRBf8HhLp7P',
+    icon: 'fa-youtube',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/synote_ai/',
+    icon: 'fa-instagram',
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/profile.php?id=61590580415868',
+    icon: 'fa-facebook',
+  },
+]
+
 export default function Footer() {
   return (
     <footer style={{
@@ -29,8 +52,8 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Links */}
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+        {/* Nav links + socials */}
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <Link to="/privacy" style={{
             color: '#9BACC8', textDecoration: 'none',
             fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
@@ -71,6 +94,36 @@ export default function Footer() {
           >
             Contact
           </a>
+
+          {/* Divider */}
+          <div style={{ width: 1, height: 16, background: 'rgba(37,99,235,0.12)' }} />
+
+          {/* Social icons */}
+          {socials.map(({ label, href, icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              style={{
+                color: '#9BACC8', textDecoration: 'none',
+                fontSize: '1rem',
+                transition: 'color 0.2s, transform 0.2s',
+                display: 'flex', alignItems: 'center',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#2563EB'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = '#9BACC8'
+                e.currentTarget.style.transform = 'none'
+              }}
+            >
+              <i className={`fa-brands ${icon}`} />
+            </a>
+          ))}
         </div>
       </div>
 
