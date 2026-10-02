@@ -49,16 +49,16 @@ export default function HowItWorks() {
       id="how-it-works"
       style={{
         padding: '7rem 2rem',
-        background: 'linear-gradient(180deg, #F5F8FF 0%, #EEF2FF 100%)',
-        borderTop: '1px solid rgba(37,99,235,0.08)',
-        borderBottom: '1px solid rgba(37,99,235,0.08)',
+        background: 'linear-gradient(180deg, #FDFAF8 0%, #FBF5F1 100%)',
+        borderTop: '1px solid rgba(180,81,45,0.08)',
+        borderBottom: '1px solid rgba(180,81,45,0.08)',
       }}
     >
       <div style={{ maxWidth: 560, margin: '0 auto' }}>
 
         {/* Eyebrow */}
         <p style={{
-          color: '#2563EB', fontFamily: 'Inter, sans-serif',
+          color: '#B4512D', fontFamily: 'Inter, sans-serif',
           fontWeight: 600, fontSize: '0.72rem',
           letterSpacing: '0.13em', textTransform: 'uppercase',
           marginBottom: '1rem', textAlign: 'center',
@@ -70,14 +70,14 @@ export default function HowItWorks() {
         <h2 style={{
           fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800,
           fontSize: 'clamp(2rem, 4vw, 2.75rem)', letterSpacing: '-0.03em',
-          color: '#0F1B3D', marginBottom: '0.75rem', textAlign: 'center',
+          color: '#2A2421', marginBottom: '0.75rem', textAlign: 'center',
         }}>
           Three steps. Zero friction.
         </h2>
 
         {/* Subline */}
         <p style={{
-          color: '#5B6E99', fontFamily: 'Inter, sans-serif',
+          color: '#6B625C', fontFamily: 'Inter, sans-serif',
           fontSize: '1rem', lineHeight: 1.7,
           textAlign: 'center', marginBottom: '3.5rem',
         }}>
@@ -87,34 +87,34 @@ export default function HowItWorks() {
         {/* Timeline card */}
         <div style={{
           background: '#FFFFFF',
-          border: '1px solid rgba(37,99,235,0.10)',
+          border: '1px solid rgba(180,81,45,0.10)',
           borderRadius: 20, padding: '1.5rem 1.75rem',
-          boxShadow: '0 4px 24px rgba(37,99,235,0.07)',
+          boxShadow: '0 4px 24px rgba(180,81,45,0.07)',
         }}>
 
           {/* Header */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 12,
             marginBottom: '1.5rem', paddingBottom: '1.25rem',
-            borderBottom: '1px solid rgba(37,99,235,0.08)',
+            borderBottom: '1px solid rgba(180,81,45,0.08)',
           }}>
             <div style={{
               width: 36, height: 36, borderRadius: '50%',
-              background: 'rgba(37,99,235,0.08)',
+              background: 'rgba(180,81,45,0.08)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#2563EB', fontSize: 15, flexShrink: 0,
+              color: '#B4512D', fontSize: 15, flexShrink: 0,
             }}>
               <i className="fa-solid fa-calendar-day" />
             </div>
             <div>
               <p style={{
                 margin: 0, fontSize: 15, fontWeight: 600,
-                color: '#0F1B3D', fontFamily: 'Plus Jakarta Sans, sans-serif',
+                color: '#2A2421', fontFamily: 'Plus Jakarta Sans, sans-serif',
               }}>
                 Synote is scheduling your events
               </p>
               <p style={{
-                margin: 0, fontSize: 12, color: '#9BACC8',
+                margin: 0, fontSize: 12, color: '#8C837D',
                 fontFamily: 'Inter, sans-serif',
               }}>
                 Here's what happens behind the scenes
@@ -131,24 +131,24 @@ export default function HowItWorks() {
             const dotBg = isDone
               ? 'rgba(16,185,129,0.10)'
               : isActive
-                ? 'rgba(37,99,235,0.10)'
-                : 'rgba(37,99,235,0.04)'
+                ? 'rgba(180,81,45,0.10)'
+                : 'rgba(180,81,45,0.04)'
 
             const dotBorder = isDone
               ? '1px solid rgba(16,185,129,0.35)'
               : isActive
-                ? '1px solid rgba(37,99,235,0.30)'
-                : '1px solid rgba(37,99,235,0.10)'
+                ? '1px solid rgba(180,81,45,0.30)'
+                : '1px solid rgba(180,81,45,0.10)'
 
             const dotColor = isDone
               ? '#10B981'
               : isActive
-                ? '#2563EB'
-                : '#9BACC8'
+                ? '#B4512D'
+                : '#8C837D'
 
             const lineBg = isDone
               ? 'rgba(16,185,129,0.25)'
-              : 'rgba(37,99,235,0.07)'
+              : 'rgba(180,81,45,0.07)'
 
             const isLast = i === steps.length - 1
 
@@ -167,8 +167,8 @@ export default function HowItWorks() {
                         position: 'absolute',
                         width: 34, height: 34, borderRadius: '50%',
                         border: '2px solid transparent',
-                        borderTopColor: '#2563EB',
-                        borderRightColor: '#2563EB',
+                        borderTopColor: '#B4512D',
+                        borderRightColor: '#B4512D',
                         animation: 'hiw-spin 0.8s linear infinite',
                         pointerEvents: 'none',
                       }} />
@@ -203,7 +203,7 @@ export default function HowItWorks() {
                   <p style={{
                     margin: 0, fontSize: 14, fontWeight: 600,
                     fontFamily: 'Plus Jakarta Sans, sans-serif',
-                    color: isPending ? '#9BACC8' : '#0F1B3D',
+                    color: isPending ? '#8C837D' : '#2A2421',
                     transition: 'color 0.4s ease',
                   }}>
                     {s.label}
@@ -211,7 +211,7 @@ export default function HowItWorks() {
                   <p style={{
                     margin: '2px 0 0', fontSize: 12,
                     fontFamily: 'Inter, sans-serif',
-                    color: isPending ? '#C4D0E3' : '#5B6E99',
+                    color: isPending ? '#DCD2CB' : '#6B625C',
                     lineHeight: 1.5,
                     transition: 'color 0.4s ease',
                   }}>
@@ -229,8 +229,8 @@ export default function HowItWorks() {
             to { transform: rotate(360deg); }
           }
           @keyframes hiw-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.25); }
-            50%       { box-shadow: 0 0 0 5px rgba(37,99,235,0.00); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(180,81,45,0.25); }
+            50%       { box-shadow: 0 0 0 5px rgba(180,81,45,0.00); }
           }
         `}</style>
 

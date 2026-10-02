@@ -2,19 +2,19 @@
 
 :root {
   /* Backgrounds */
-  --bg:              #EEF2FF;
+  --bg:              #FBF5F1;
   --bg-card:         #FFFFFF;
-  --bg-card-hover:   #F5F8FF;
-  --border:          rgba(37,99,235,0.10);
+  --bg-card-hover:   #FDFAF8;
+  --border:          rgba(180,81,45,0.10);
 
   /* Text */
-  --text:            #0F1B3D;
-  --text-muted:      #5B6E99;
+  --text:            #2A2421;
+  --text-muted:      #6B625C;
 
-  /* Accent — blue, not purple */
-  --accent:          #2563EB;
-  --accent-light:    #3B82F6;
-  --accent-glow:     rgba(37,99,235,0.15);
+  /* Accent — Synote orange (matches the logo) */
+  --accent:          #B4512D;
+  --accent-light:    #C6613F;
+  --accent-glow:     rgba(180,81,45,0.15);
 
   --green:           #10B981;
 

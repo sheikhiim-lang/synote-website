@@ -142,7 +142,7 @@ export default function Privacy() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#EEF2FF',
+      background: '#FBF5F1',
       fontFamily: 'Inter, sans-serif',
     }}>
 
@@ -152,7 +152,7 @@ export default function Privacy() {
         background: 'rgba(255,255,255,0.92)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
-        borderBottom: '1px solid rgba(37,99,235,0.10)',
+        borderBottom: '1px solid rgba(180,81,45,0.10)',
         padding: '0 2rem', height: 64,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
@@ -161,12 +161,12 @@ export default function Privacy() {
         </Link>
         <Link to="/" style={{
           display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-          color: '#5B6E99', textDecoration: 'none', fontSize: '0.88rem',
+          color: '#6B625C', textDecoration: 'none', fontSize: '0.88rem',
           fontFamily: 'Inter, sans-serif', fontWeight: 500,
           transition: 'color 0.2s',
         }}
-        onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-        onMouseLeave={e => e.currentTarget.style.color = '#5B6E99'}
+        onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+        onMouseLeave={e => e.currentTarget.style.color = '#6B625C'}
         >
           <i className="fa-solid fa-arrow-left" style={{ fontSize: '0.75rem' }} />
           Back to home
@@ -175,7 +175,7 @@ export default function Privacy() {
 
       {/* ── Hero ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)',
+        background: 'linear-gradient(135deg, #B4512D 0%, #C6613F 100%)',
         padding: '4rem 2rem',
         textAlign: 'center',
         position: 'relative', overflow: 'hidden',
@@ -233,28 +233,28 @@ export default function Privacy() {
           {sections.map((s) => (
             <div key={s.num} style={{
               background: '#FFFFFF',
-              border: '1px solid rgba(37,99,235,0.09)',
+              border: '1px solid rgba(180,81,45,0.09)',
               borderRadius: 16,
               padding: '1.4rem 1.6rem',
-              boxShadow: '0 2px 10px rgba(37,99,235,0.05)',
+              boxShadow: '0 2px 10px rgba(180,81,45,0.05)',
               display: 'flex', gap: '1rem', alignItems: 'flex-start',
               transition: 'box-shadow 0.2s, border-color 0.2s',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.boxShadow = '0 6px 24px rgba(37,99,235,0.10)'
-              e.currentTarget.style.borderColor = 'rgba(37,99,235,0.18)'
+              e.currentTarget.style.boxShadow = '0 6px 24px rgba(180,81,45,0.10)'
+              e.currentTarget.style.borderColor = 'rgba(180,81,45,0.18)'
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.boxShadow = '0 2px 10px rgba(37,99,235,0.05)'
-              e.currentTarget.style.borderColor = 'rgba(37,99,235,0.09)'
+              e.currentTarget.style.boxShadow = '0 2px 10px rgba(180,81,45,0.05)'
+              e.currentTarget.style.borderColor = 'rgba(180,81,45,0.09)'
             }}
             >
               {/* Icon */}
               <div style={{
                 width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                background: 'rgba(37,99,235,0.07)',
+                background: 'rgba(180,81,45,0.07)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#2563EB', fontSize: '0.9rem',
+                color: '#B4512D', fontSize: '0.9rem',
                 marginTop: '0.1rem',
               }}>
                 <i className={`fa-solid ${s.icon}`} />
@@ -265,9 +265,9 @@ export default function Privacy() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.4rem' }}>
                   <span style={{
                     fontSize: '0.65rem', fontWeight: 700,
-                    color: '#2563EB', letterSpacing: '0.08em',
+                    color: '#B4512D', letterSpacing: '0.08em',
                     fontFamily: 'Inter, sans-serif',
-                    background: 'rgba(37,99,235,0.08)',
+                    background: 'rgba(180,81,45,0.08)',
                     padding: '0.15rem 0.5rem', borderRadius: 6,
                   }}>
                     {s.num}
@@ -276,14 +276,14 @@ export default function Privacy() {
                     margin: 0,
                     fontFamily: 'Plus Jakarta Sans, sans-serif',
                     fontWeight: 700, fontSize: '0.95rem',
-                    color: '#0F1B3D', letterSpacing: '-0.01em',
+                    color: '#2A2421', letterSpacing: '-0.01em',
                   }}>
                     {s.title}
                   </h3>
                 </div>
                 <p style={{
                   margin: 0, fontSize: '0.88rem',
-                  color: '#5B6E99', lineHeight: 1.7,
+                  color: '#6B625C', lineHeight: 1.7,
                   fontFamily: 'Inter, sans-serif',
                 }}>
                   {s.content}
@@ -296,37 +296,37 @@ export default function Privacy() {
         {/* ── Contact card ── */}
         <div style={{
           marginTop: '2rem',
-          background: 'linear-gradient(135deg, rgba(37,99,235,0.06), rgba(59,130,246,0.04))',
-          border: '1px solid rgba(37,99,235,0.14)',
+          background: 'linear-gradient(135deg, rgba(180,81,45,0.06), rgba(198,97,63,0.04))',
+          border: '1px solid rgba(180,81,45,0.14)',
           borderRadius: 20, padding: '2rem',
           textAlign: 'center',
         }}>
           <div style={{
             width: 44, height: 44, borderRadius: 12,
-            background: 'rgba(37,99,235,0.10)',
+            background: 'rgba(180,81,45,0.10)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 1rem', color: '#2563EB', fontSize: '1.1rem',
+            margin: '0 auto 1rem', color: '#B4512D', fontSize: '1.1rem',
           }}>
             <i className="fa-solid fa-envelope" />
           </div>
           <h3 style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif',
             fontWeight: 700, fontSize: '1.05rem',
-            color: '#0F1B3D', marginBottom: '0.5rem',
+            color: '#2A2421', marginBottom: '0.5rem',
           }}>
             Contact Us
           </h3>
-          <p style={{ color: '#5B6E99', fontSize: '0.88rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+          <p style={{ color: '#6B625C', fontSize: '0.88rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
             Zenith Software Corp<br />
             201‑1017 Fort St, Victoria, BC V8V 3K5, Canada
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="mailto:support@synote.ca" style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
-              background: '#2563EB', color: '#fff', textDecoration: 'none',
+              background: '#B4512D', color: '#fff', textDecoration: 'none',
               padding: '0.6rem 1.25rem', borderRadius: 10,
               fontSize: '0.875rem', fontWeight: 600, fontFamily: 'Inter, sans-serif',
-              boxShadow: '0 4px 14px rgba(37,99,235,0.25)',
+              boxShadow: '0 4px 14px rgba(180,81,45,0.25)',
               transition: 'opacity 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
@@ -337,14 +337,14 @@ export default function Privacy() {
             </a>
             <a href="https://synote.ca" target="_blank" rel="noreferrer" style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
-              background: 'rgba(37,99,235,0.08)', color: '#2563EB', textDecoration: 'none',
+              background: 'rgba(180,81,45,0.08)', color: '#B4512D', textDecoration: 'none',
               padding: '0.6rem 1.25rem', borderRadius: 10,
               fontSize: '0.875rem', fontWeight: 600, fontFamily: 'Inter, sans-serif',
-              border: '1px solid rgba(37,99,235,0.15)',
+              border: '1px solid rgba(180,81,45,0.15)',
               transition: 'background 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(37,99,235,0.13)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'rgba(37,99,235,0.08)'}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(180,81,45,0.13)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(180,81,45,0.08)'}
             >
               <i className="fa-solid fa-globe" style={{ fontSize: '0.8rem' }} />
               synote.ca
@@ -355,7 +355,7 @@ export default function Privacy() {
         {/* ── Footer note ── */}
         <p style={{
           textAlign: 'center', marginTop: '2.5rem',
-          fontSize: '0.78rem', color: '#C4D0E3',
+          fontSize: '0.78rem', color: '#DCD2CB',
           fontFamily: 'Inter, sans-serif',
         }}>
           © {new Date().getFullYear()} Zenith Software Corp. All rights reserved.

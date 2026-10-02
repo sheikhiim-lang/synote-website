@@ -26,7 +26,7 @@ const socials = [
 export default function Footer() {
   return (
     <footer style={{
-      borderTop: '1px solid rgba(37,99,235,0.08)',
+      borderTop: '1px solid rgba(180,81,45,0.08)',
       padding: '2.5rem 2rem',
       maxWidth: 1100, margin: '0 auto',
     }}>
@@ -45,7 +45,7 @@ export default function Footer() {
             style={{ height: 26, width: 'auto', display: 'block' }}
           />
           <span style={{
-            color: '#9BACC8', fontSize: '0.85rem',
+            color: '#8C837D', fontSize: '0.85rem',
             fontFamily: 'Inter, sans-serif', marginLeft: '0.25rem',
           }}>
             © {new Date().getFullYear()}
@@ -55,48 +55,48 @@ export default function Footer() {
         {/* Nav links + socials */}
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <Link to="/privacy" style={{
-            color: '#9BACC8', textDecoration: 'none',
+            color: '#8C837D', textDecoration: 'none',
             fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#9BACC8'}
+          onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8C837D'}
           >
             Privacy
           </Link>
           <Link to="/privacy" style={{
-            color: '#9BACC8', textDecoration: 'none',
+            color: '#8C837D', textDecoration: 'none',
             fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#9BACC8'}
+          onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8C837D'}
           >
             Terms
           </Link>
           <Link to="/account-deletion" style={{
-            color: '#9BACC8', textDecoration: 'none',
+            color: '#8C837D', textDecoration: 'none',
             fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#9BACC8'}
+          onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8C837D'}
           >
             Delete Account
           </Link>
           <a href="mailto:support@synote.ca" style={{
-            color: '#9BACC8', textDecoration: 'none',
+            color: '#8C837D', textDecoration: 'none',
             fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#9BACC8'}
+          onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8C837D'}
           >
             Contact
           </a>
 
           {/* Divider */}
-          <div style={{ width: 1, height: 16, background: 'rgba(37,99,235,0.12)' }} />
+          <div style={{ width: 1, height: 16, background: 'rgba(180,81,45,0.12)' }} />
 
           {/* Social icons */}
           {socials.map(({ label, href, icon }) => (
@@ -107,17 +107,17 @@ export default function Footer() {
               rel="noreferrer"
               aria-label={label}
               style={{
-                color: '#9BACC8', textDecoration: 'none',
+                color: '#8C837D', textDecoration: 'none',
                 fontSize: '1rem',
                 transition: 'color 0.2s, transform 0.2s',
                 display: 'flex', alignItems: 'center',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.color = '#2563EB'
+                e.currentTarget.style.color = '#B4512D'
                 e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.color = '#9BACC8'
+                e.currentTarget.style.color = '#8C837D'
                 e.currentTarget.style.transform = 'none'
               }}
             >
@@ -128,12 +128,12 @@ export default function Footer() {
       </div>
 
       {/* Divider */}
-      <div style={{ borderTop: '1px solid rgba(37,99,235,0.07)', paddingTop: '1.25rem' }}>
+      <div style={{ borderTop: '1px solid rgba(180,81,45,0.07)', paddingTop: '1.25rem' }}>
         <p style={{
           textAlign: 'center',
           fontFamily: 'Inter, sans-serif',
           fontSize: '0.78rem',
-          color: '#C4D0E3',
+          color: '#DCD2CB',
           letterSpacing: '0.02em',
         }}>
           Powered by{' '}
@@ -142,7 +142,7 @@ export default function Footer() {
             target="_blank"
             rel="noreferrer"
             style={{
-              color: '#2563EB', textDecoration: 'none', fontWeight: 600,
+              color: '#B4512D', textDecoration: 'none', fontWeight: 600,
               transition: 'opacity 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}

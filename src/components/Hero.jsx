@@ -23,7 +23,7 @@ function PulseWave() {
         const speed = [0.03, 0.05, 0.02][l]
         const yOff  = H / 2 + (l - 1) * 20
 
-        ctx.strokeStyle = `rgba(37,99,235,${alpha})`
+        ctx.strokeStyle = `rgba(180,81,45,${alpha})`
         ctx.lineWidth = l === 0 ? 2 : 1
 
         for (let x = 0; x <= W; x += 2) {
@@ -66,7 +66,7 @@ export default function Hero() {
         position: 'absolute', top: '30%', left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 800, height: 600, borderRadius: '50%',
-        background: 'radial-gradient(ellipse, rgba(37,99,235,0.10) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, rgba(180,81,45,0.10) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -83,11 +83,11 @@ export default function Hero() {
             fontWeight: 800, lineHeight: 1.1,
             letterSpacing: '-0.03em',
             marginBottom: '1.5rem',
-            color: '#0F1B3D',
+            color: '#2A2421',
           }}>
             Your AI scheduling assistant that{' '}
             <span style={{
-              background: 'linear-gradient(135deg, #2563EB, #3B82F6 60%, #60A5FA)',
+              background: 'linear-gradient(135deg, #B4512D, #C6613F 60%, #E08A63)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -98,7 +98,7 @@ export default function Hero() {
 
           {/* Subline */}
           <p style={{
-            color: '#5B6E99',
+            color: '#6B625C',
             fontSize: 'clamp(1rem, 2vw, 1.15rem)',
             fontFamily: 'Inter, sans-serif', fontWeight: 400,
             maxWidth: 500, marginBottom: '2.5rem', lineHeight: 1.7,
@@ -118,40 +118,40 @@ export default function Hero() {
               target="_blank"
               rel="noreferrer"
               style={{
-                background: '#2563EB', color: '#fff', textDecoration: 'none',
+                background: '#B4512D', color: '#fff', textDecoration: 'none',
                 padding: '0.85rem 2rem', borderRadius: 12,
                 fontWeight: 700, fontFamily: 'Inter, sans-serif', fontSize: '1rem',
-                boxShadow: '0 0 40px rgba(37,99,235,0.30)',
+                boxShadow: '0 0 40px rgba(180,81,45,0.30)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 0 60px rgba(37,99,235,0.45)'
+                e.currentTarget.style.boxShadow = '0 0 60px rgba(180,81,45,0.45)'
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = 'none'
-                e.currentTarget.style.boxShadow = '0 0 40px rgba(37,99,235,0.30)'
+                e.currentTarget.style.boxShadow = '0 0 40px rgba(180,81,45,0.30)'
               }}
             >
               <i className="fa-brands fa-apple" style={{ fontSize: '1.1rem' }} />
               Download for iOS
             </a>
             <a href="#how-it-works" style={{
-              background: 'rgba(37,99,235,0.07)',
-              color: '#0F1B3D', textDecoration: 'none',
+              background: 'rgba(180,81,45,0.07)',
+              color: '#2A2421', textDecoration: 'none',
               padding: '0.85rem 2rem', borderRadius: 12,
               fontWeight: 500, fontFamily: 'Inter, sans-serif', fontSize: '1rem',
-              border: '1px solid rgba(37,99,235,0.15)',
+              border: '1px solid rgba(180,81,45,0.15)',
               transition: 'background 0.2s, border-color 0.2s',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(37,99,235,0.12)'
-              e.currentTarget.style.borderColor = 'rgba(37,99,235,0.25)'
+              e.currentTarget.style.background = 'rgba(180,81,45,0.12)'
+              e.currentTarget.style.borderColor = 'rgba(180,81,45,0.25)'
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = 'rgba(37,99,235,0.07)'
-              e.currentTarget.style.borderColor = 'rgba(37,99,235,0.15)'
+              e.currentTarget.style.background = 'rgba(180,81,45,0.07)'
+              e.currentTarget.style.borderColor = 'rgba(180,81,45,0.15)'
             }}
             >
               See how it works
@@ -161,7 +161,7 @@ export default function Hero() {
           {/* Waveform */}
           <PulseWave />
           <p style={{
-            fontSize: '0.72rem', color: '#9BACC8',
+            fontSize: '0.72rem', color: '#8C837D',
             fontFamily: 'Inter, sans-serif',
             marginTop: '0.5rem', letterSpacing: '0.08em',
           }}>
@@ -180,7 +180,7 @@ export default function Hero() {
               maxWidth: 340,
               height: 'auto',
               display: 'block',
-              filter: 'drop-shadow(0 24px 48px rgba(37,99,235,0.18))',
+              filter: 'drop-shadow(0 24px 48px rgba(180,81,45,0.18))',
             }}
           />
         </div>

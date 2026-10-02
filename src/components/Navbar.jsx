@@ -29,7 +29,7 @@ export default function Navbar() {
     : 'transparent'
 
   const navBorder = scrolled || menuOpen
-    ? '1px solid rgba(37,99,235,0.10)'
+    ? '1px solid rgba(180,81,45,0.10)'
     : '1px solid transparent'
 
   return (
@@ -65,31 +65,31 @@ export default function Navbar() {
         }} className="nav-desktop-links">
           {links.map(({ label, href }) => (
             <a key={label} href={href} style={{
-              color: '#5B6E99', textDecoration: 'none',
+              color: '#6B625C', textDecoration: 'none',
               fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', fontWeight: 500,
               transition: 'color 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.color = '#0F1B3D'}
-            onMouseLeave={e => e.currentTarget.style.color = '#5B6E99'}
+            onMouseEnter={e => e.currentTarget.style.color = '#2A2421'}
+            onMouseLeave={e => e.currentTarget.style.color = '#6B625C'}
             >
               {label}
             </a>
           ))}
           <a href="#download" style={{
-            background: '#2563EB', color: '#fff', textDecoration: 'none',
+            background: '#B4512D', color: '#fff', textDecoration: 'none',
             padding: '0.45rem 1.15rem', borderRadius: 8,
             fontSize: '0.875rem', fontWeight: 700,
             fontFamily: 'Inter, sans-serif',
-            boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+            boxShadow: '0 4px 12px rgba(180,81,45,0.25)',
             transition: 'opacity 0.2s, box-shadow 0.2s',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.opacity = '0.9'
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(37,99,235,0.35)'
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(180,81,45,0.35)'
           }}
           onMouseLeave={e => {
             e.currentTarget.style.opacity = '1'
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.25)'
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(180,81,45,0.25)'
           }}
           >
             Get the app
@@ -110,20 +110,20 @@ export default function Navbar() {
         >
           <span style={{
             display: 'block', height: 2, borderRadius: 2,
-            background: '#0F1B3D',
+            background: '#2A2421',
             width: menuOpen ? 22 : 22,
             transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none',
             transition: 'transform 0.25s',
           }} />
           <span style={{
             display: 'block', height: 2, borderRadius: 2,
-            background: '#0F1B3D', width: 16,
+            background: '#2A2421', width: 16,
             opacity: menuOpen ? 0 : 1,
             transition: 'opacity 0.2s',
           }} />
           <span style={{
             display: 'block', height: 2, borderRadius: 2,
-            background: '#0F1B3D', width: 22,
+            background: '#2A2421', width: 22,
             transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none',
             transition: 'transform 0.25s',
           }} />
@@ -139,7 +139,7 @@ export default function Navbar() {
           background: 'rgba(255,255,255,0.97)',
           backdropFilter: 'blur(14px)',
           WebkitBackdropFilter: 'blur(14px)',
-          borderBottom: '1px solid rgba(37,99,235,0.10)',
+          borderBottom: '1px solid rgba(180,81,45,0.10)',
           padding: '1.5rem',
           display: 'flex', flexDirection: 'column', gap: '0.25rem',
           transform: menuOpen ? 'translateY(0)' : 'translateY(-110%)',
@@ -150,14 +150,14 @@ export default function Navbar() {
       >
         {links.map(({ label, href }) => (
           <a key={label} href={href} onClick={close} style={{
-            color: '#0F1B3D', textDecoration: 'none',
+            color: '#2A2421', textDecoration: 'none',
             fontSize: '1.1rem', fontFamily: 'Plus Jakarta Sans, sans-serif',
             fontWeight: 600, padding: '0.85rem 0.5rem',
-            borderBottom: '1px solid rgba(37,99,235,0.07)',
+            borderBottom: '1px solid rgba(180,81,45,0.07)',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#0F1B3D'}
+          onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+          onMouseLeave={e => e.currentTarget.style.color = '#2A2421'}
           >
             {label}
           </a>
@@ -166,12 +166,12 @@ export default function Navbar() {
         <a href="#download" onClick={close} style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           gap: '0.5rem',
-          background: '#2563EB', color: '#fff', textDecoration: 'none',
+          background: '#B4512D', color: '#fff', textDecoration: 'none',
           padding: '0.9rem', borderRadius: 12,
           fontSize: '1rem', fontWeight: 700,
           fontFamily: 'Inter, sans-serif',
           marginTop: '1rem',
-          boxShadow: '0 4px 16px rgba(37,99,235,0.28)',
+          boxShadow: '0 4px 16px rgba(180,81,45,0.28)',
         }}>
           <i className="fa-brands fa-apple" />
           Get the app

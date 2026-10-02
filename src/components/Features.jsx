@@ -36,33 +36,33 @@ function FeatureCard({ icon, title, desc }) {
     <div
       style={{
         background: '#FFFFFF',
-        border: '1px solid rgba(37,99,235,0.10)',
+        border: '1px solid rgba(180,81,45,0.10)',
         borderRadius: 18,
         padding: '1.75rem',
         transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         cursor: 'default',
-        boxShadow: '0 2px 12px rgba(37,99,235,0.05)',
+        boxShadow: '0 2px 12px rgba(180,81,45,0.05)',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(37,99,235,0.25)'
+        e.currentTarget.style.borderColor = 'rgba(180,81,45,0.25)'
         e.currentTarget.style.transform = 'translateY(-3px)'
-        e.currentTarget.style.boxShadow = '0 12px 32px rgba(37,99,235,0.10)'
+        e.currentTarget.style.boxShadow = '0 12px 32px rgba(180,81,45,0.10)'
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(37,99,235,0.10)'
+        e.currentTarget.style.borderColor = 'rgba(180,81,45,0.10)'
         e.currentTarget.style.transform = 'none'
-        e.currentTarget.style.boxShadow = '0 2px 12px rgba(37,99,235,0.05)'
+        e.currentTarget.style.boxShadow = '0 2px 12px rgba(180,81,45,0.05)'
       }}
     >
       {/* Icon box */}
       <div style={{
         width: 44, height: 44,
         borderRadius: 12,
-        background: 'rgba(37,99,235,0.08)',
+        background: 'rgba(180,81,45,0.08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         marginBottom: '1.1rem',
       }}>
-        <i className={`fa-solid ${icon}`} style={{ fontSize: '1rem', color: '#2563EB' }} />
+        <i className={`fa-solid ${icon}`} style={{ fontSize: '1rem', color: '#B4512D' }} />
       </div>
 
       <h3 style={{
@@ -70,14 +70,14 @@ function FeatureCard({ icon, title, desc }) {
         fontWeight: 700,
         fontSize: '1rem',
         marginBottom: '0.5rem',
-        color: '#0F1B3D',
+        color: '#2A2421',
         letterSpacing: '-0.01em',
       }}>
         {title}
       </h3>
 
       <p style={{
-        color: '#5B6E99',
+        color: '#6B625C',
         fontSize: '0.88rem',
         fontFamily: 'Inter, sans-serif',
         lineHeight: 1.65,
@@ -101,7 +101,7 @@ export default function Features() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
         <p style={{
-          color: '#2563EB',
+          color: '#B4512D',
           fontFamily: 'Inter, sans-serif',
           fontWeight: 600,
           fontSize: '0.72rem',
@@ -117,12 +117,12 @@ export default function Features() {
           fontSize: 'clamp(2rem, 4vw, 2.75rem)',
           letterSpacing: '-0.03em',
           marginBottom: '1rem',
-          color: '#0F1B3D',
+          color: '#2A2421',
         }}>
           Built for the way you work
         </h2>
         <p style={{
-          color: '#5B6E99',
+          color: '#6B625C',
           fontFamily: 'Inter, sans-serif',
           fontSize: '1.05rem',
           maxWidth: 480,
