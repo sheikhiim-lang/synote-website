@@ -127,6 +127,24 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Guides — plain links so search engines can follow them to the static guide pages */}
+      <nav aria-label="Guides" style={{
+        display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem', justifyContent: 'center',
+        marginBottom: '1.25rem', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
+      }}>
+        {[
+          ['/photo-to-calendar/', 'Photo to calendar'],
+          ['/ai-planner-for-students/', 'AI planner for students'],
+          ['/ai-scheduling-assistant/', 'AI scheduling assistant'],
+          ['/guides/', 'All guides'],
+        ].map(([href, label]) => (
+          <a key={href} href={href} style={{ color: '#6B625C', textDecoration: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#B4512D'}
+            onMouseLeave={e => e.currentTarget.style.color = '#6B625C'}
+          >{label}</a>
+        ))}
+      </nav>
+
       {/* Divider */}
       <div style={{ borderTop: '1px solid rgba(180,81,45,0.07)', paddingTop: '1.25rem' }}>
         <p style={{
