@@ -45,10 +45,6 @@ page("photo-to-calendar",
 </ul>
 <p>Synote keeps the place out of the title and puts it in the event's location, so “Biology 101 (Room 204)” becomes the event <em>Biology 101</em> at <em>Room 204</em>.</p>
 
-<div class="g-shots">
-  <figure><img src="/img/synote-schedule-preview.jpg" alt="Synote schedule preview showing the events it will add, with dates, times and a weekly repeat" width="585" height="1266" loading="lazy"><figcaption>The preview shows exactly what will be added — nothing is saved until you tap Save.</figcaption></figure>
-  <figure><img src="/img/synote-saved-recurring.jpg" alt="Synote confirming events were scheduled, with repeating events running until the end date" width="585" height="1266" loading="lazy"><figcaption>Weekly classes are saved as repeating events that stop on the date you gave.</figcaption></figure>
-</div>
 
 <h2>Why not just retype it?</h2>
 <p>Because the slow part isn't typing one event — it's the repetition and the details. With a photo, Synote handles the parts people usually get wrong:</p>
@@ -84,7 +80,7 @@ page("ai-planner-for-students",
   crumb="AI planner for students",
   h1='The <em>AI student planner</em> that builds your semester for you',
   lead="Snap your class timetable, type your exams and assignment deadlines in plain words, and Synote turns it all into a calendar you can actually follow — with repeats, reminders and the free time between classes.",
-  hero_img=("/img/synote-day-timeline.jpg", "Synote day timeline showing a student's events with the free time between them", 585, 1266),
+  hero_img=None,
   body="""
 <p>Most student planners are empty notebooks with a grid. You still have to copy every class, every lab and every deadline into them by hand — usually in the first, busiest week of term. Synote flips that around: you give it what you already have, and it does the copying.</p>
 
@@ -101,10 +97,6 @@ page("ai-planner-for-students",
 <div class="g-quote">“Chem midterm Thursday Oct 15 at 10am, essay due Nov 2, and study group every Tuesday at 7pm”</div>
 <p>Synote splits that into three items: a timed exam, a deadline, and a weekly study session. If something is missing — like what time the study group ends — it asks instead of guessing, and nothing is saved until you tap <strong>Save</strong>.</p>
 
-<div class="g-shots">
-  <figure><img src="/img/synote-type-request.jpg" alt="Typing several events in one sentence into Synote" width="585" height="1266" loading="lazy"><figcaption>One sentence, several events — Synote understands dates like “Friday” and “every Monday”.</figcaption></figure>
-  <figure><img src="/img/synote-task-completed.jpg" alt="Synote calendar with a completed item ticked off" width="585" height="1266" loading="lazy"><figcaption>Tick things off as you go — your day view shows what's done and what's next.</figcaption></figure>
-</div>
 
 <h2>See your real free time</h2>
 <p>Synote's day view shows each class with its actual start and end time, and labels the gaps between them — “1 h 30 free” — so you can see where a study block, a gym session or a shift fits before you commit to it.</p>
@@ -141,7 +133,7 @@ page("ai-scheduling-assistant",
   crumb="AI scheduling assistant",
   h1='An <em>AI scheduling assistant</em> that plans your day from one sentence',
   lead="Type it, say it or snap a photo. Synote understands dates, times and repeats, asks when something is missing, checks for clashes, and shows you the plan before it saves anything.",
-  hero_img=("/img/synote-schedule-preview.jpg", "Synote schedule preview created from a single typed sentence", 585, 1266),
+  hero_img=None,
   body="""
 <p>A calendar app is a place to store plans. A scheduling assistant does the planning work: it turns what you say into correctly dated events, notices what's missing, and keeps your week consistent. That's what Synote is — an assistant that lives inside your calendar.</p>
 
@@ -166,10 +158,6 @@ page("ai-scheduling-assistant",
 <h2>It asks instead of guessing</h2>
 <p>Most mistakes in calendars come from guessed details. If you say “team lunch Thursday” without a time, Synote asks “What time is the team lunch?” instead of inventing noon. You always see a preview of what it understood, and nothing is saved until you tap <strong>Save</strong>.</p>
 
-<div class="g-shots">
-  <figure><img src="/img/synote-type-request.jpg" alt="Typing a plan into Synote's chat" width="585" height="1266" loading="lazy"><figcaption>Type your plans like a text message.</figcaption></figure>
-  <figure><img src="/img/synote-saved-recurring.jpg" alt="Synote confirming the events were scheduled and offering reminders" width="585" height="1266" loading="lazy"><figcaption>Saved in one tap — with one question to set reminders for everything.</figcaption></figure>
-</div>
 
 <h2>Synote vs. a regular calendar app</h2>
 <div class="g-table-wrap"><table class="g-table">
@@ -283,7 +271,7 @@ def build(slug, p):
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "WebPage", "@id": url, "url": url, "name": p["title"], "description": p["desc"],
          "inLanguage": "en", "dateModified": UPDATED, "isPartOf": {"@type": "WebSite", "name": "Synote", "url": SITE + "/"},
-         "primaryImageOfPage": SITE + p["hero_img"][0], "about": app_ld,
+         "primaryImageOfPage": SITE + (p["hero_img"] or ("/SynoteCaptureCalendar.jpg",))[0], "about": app_ld,
          "publisher": {"@type": "Organization", "name": "Zenith Software Corp", "url": "https://zenithsoftware.ca/"}},
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Synote", "item": SITE + "/"},
@@ -292,11 +280,14 @@ def build(slug, p):
         {"@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in p["faq"]]},
     ]}
-    src, alt, w, h = p["hero_img"]
+    src, alt, w, h = p["hero_img"] or ("/SynoteCaptureCalendar.jpg", "", 0, 0)
+    phone = (f'<div class="g-phone"><img src="{src}" alt="{esc(alt)}" width="{w}" height="{h}" fetchpriority="high"></div>'
+             if p["hero_img"] else "")
+    hero_cls = "g-hero" if p["hero_img"] else "g-hero g-hero-solo"
     faq_html = "\n".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in p["faq"])
     rel = "\n".join(f'<a href="/{s}/"><b>{CARD[s][0]}</b><span>{CARD[s][1]}</span></a>' for s in p["related"])
     doc = head(p["title"], p["desc"], url, src, ld) + f"""
-<section class="g-hero">
+<section class="{hero_cls}">
   <div>
     <nav class="g-crumbs" aria-label="Breadcrumb"><a href="/">Synote</a> › <a href="/guides/">Guides</a> › {esc(p["crumb"])}</nav>
     <h1>{p["h1"]}</h1>
@@ -304,7 +295,7 @@ def build(slug, p):
     <a class="g-btn big" href="{APP}">{APPLE} Download on the App Store</a>
     <p class="g-sub">Free to download · iPhone · English, Français, 日本語, فارسی</p>
   </div>
-  <div class="g-phone"><img src="{src}" alt="{esc(alt)}" width="{w}" height="{h}" fetchpriority="high"></div>
+  {phone}
 </section>
 <main class="g-main">
 {p["body"]}
@@ -331,7 +322,7 @@ def hub():
           "description": desc, "inLanguage": "en",
           "hasPart": [{"@type": "WebPage", "url": f"{SITE}/{s}/", "name": PAGES[s]["title"]} for s in PAGES]}
     cards = "\n".join(f'<a href="/{s}/"><b>{CARD[s][0]}</b><span>{esc(PAGES[s]["desc"])}</span></a>' for s in PAGES)
-    doc = head(title, desc, url, "/img/synote-day-timeline.jpg", ld) + f"""
+    doc = head(title, desc, url, "/SynoteCaptureCalendar.jpg", ld) + f"""
 <section class="g-hero" style="grid-template-columns:1fr;padding-bottom:20px">
   <div>
     <nav class="g-crumbs" aria-label="Breadcrumb"><a href="/">Synote</a> › Guides</nav>
