@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /synote-embed.html
+Disallow: /synote-embed-chat.html
+Disallow: /synote-embed-image.html
+
+Sitemap: https://www.synote.ca/sitemap.xml

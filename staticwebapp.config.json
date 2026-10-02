@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/favicon.svg"]
+    "exclude": ["/assets/*", "/favicon.svg", "/robots.txt", "/sitemap.xml", "/*.png", "/*.jpg", "/*.svg", "/*.html"]
   },
   "globalHeaders": {
     "Cache-Control": "no-cache"
