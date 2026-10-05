@@ -136,6 +136,10 @@ export default function Footer() {
           ['/photo-to-calendar/', 'Photo to calendar'],
           ['/ai-planner-for-students/', 'AI planner for students'],
           ['/ai-scheduling-assistant/', 'AI scheduling assistant'],
+          ['/shift-schedule-app/', 'Shift schedule app'],
+          ['/schedule-maker/', 'Schedule maker'],
+          ['/day-planner-app/', 'Day planner app'],
+          ['/fr/emploi-du-temps/', 'Emploi du temps (FR)'],
           ['/guides/', 'All guides'],
         ].map(([href, label]) => (
           <a key={href} href={href} style={{ color: '#6B625C', textDecoration: 'none' }}

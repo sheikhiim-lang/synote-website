@@ -70,7 +70,8 @@ page("photo-to-calendar",
     ("Will it add events without asking me?", "No. You always see a preview first, and nothing is saved until you tap Save."),
     ("Is Synote free?", "Synote is free to download on the App Store and you can try the AI features for free. A Pro subscription unlocks unlimited use."),
   ],
-  related=["ai-planner-for-students", "ai-scheduling-assistant"],
+  related=["ai-planner-for-students", "ai-scheduling-assistant", "shift-schedule-app"],
+  alternates={"fr": "/fr/emploi-du-temps/"},
 )
 
 # ───────────────────────────────────────────────────────────────── 2
@@ -123,7 +124,7 @@ page("ai-planner-for-students",
     ("Does Synote work in French?", "Yes. Synote works in English, French, Japanese and Persian."),
     ("Is Synote free for students?", "Synote is free to download and you can try the AI features for free. A Pro subscription unlocks unlimited use."),
   ],
-  related=["photo-to-calendar", "ai-scheduling-assistant"],
+  related=["photo-to-calendar", "ai-scheduling-assistant", "schedule-maker"],
 )
 
 # ───────────────────────────────────────────────────────────────── 3
@@ -186,28 +187,290 @@ page("ai-scheduling-assistant",
     ("Does Synote save anything without my confirmation?", "No. You see a preview of every event first, and nothing is saved until you tap Save."),
     ("Which languages does Synote understand?", "English, French, Japanese and Persian."),
   ],
-  related=["photo-to-calendar", "ai-planner-for-students"],
+  related=["photo-to-calendar", "ai-planner-for-students", "day-planner-app"],
+)
+
+# ───────────────────────────────────────────────────────────────── 4
+page("shift-schedule-app",
+  updated="2026-10-05",
+  title="Shift Schedule App: Add Work Shifts by Typing | Synote",
+  desc="Add your work shifts by typing, speaking or snapping the roster. Synote handles night shifts past midnight, repeating rotas, clashes and reminders.",
+  crumb="Shift schedule app",
+  h1='A <em>shift schedule app</em> that adds your shifts for you',
+  lead="Type your shifts the way you'd text a coworker, or snap a photo of the roster. Synote puts every shift on your iPhone calendar — night shifts that end the next morning included — and reminds you before you have to leave.",
+  hero_img=None,
+  body="""
+<p>When your hours change every week, keeping a calendar up to date is a chore. Copying a roster into a calendar app means opening the same form again and again: date, start, end, repeat, reminder. Synote lets you add a whole week of shifts in one message.</p>
+
+<h2>Add a week of shifts in one message</h2>
+<div class="g-quote">“Work Monday, Tuesday and Friday 7am to 3:30pm, remind me 60 minutes before”</div>
+<p>From that one line Synote prepares three shifts with the right start and end times and a reminder an hour before each one. You check the preview, tap <strong>Save</strong>, and they're on your calendar.</p>
+<ol class="g-steps">
+  <li><b>Type, say or snap it</b>Write your shifts in plain words, say them out loud, or take a photo of the roster pinned up at work. A screenshot of a scheduling app works too.</li>
+  <li><b>Synote fills in the details</b>It works out each date, the start and end time, and any repeat. If a detail is missing, it asks a short question instead of guessing — for example, whether “7 to 3” means 7am or 7pm.</li>
+  <li><b>Review and save</b>Nothing is saved until you tap <strong>Save</strong>. Before it saves, Synote checks the new shifts against what's already in your calendar and tells you about any clash.</li>
+</ol>
+
+<h2>Night shifts that end the next morning</h2>
+<p>Many calendar apps get overnight shifts wrong. Synote doesn't:</p>
+<div class="g-quote">“Night shift Saturday 10pm to 6am”</div>
+<p>This becomes one shift from 10pm Saturday to 6am <em>Sunday</em>. Your day view shows it in the right place, and the reminder fires before you leave on Saturday evening, not on the wrong day.</p>
+
+<h2>Fixed, repeating and rotating schedules</h2>
+<ul>
+  <li><strong>Same shifts every week:</strong> “Shift every Monday, Tuesday, Thursday and Saturday 2:30am to 9am” creates one repeating series.</li>
+  <li><strong>Every other week:</strong> “Weekend shift every other Saturday 8am to 4pm” repeats every two weeks, not every week.</li>
+  <li><strong>Rotating rosters</strong> (4 on / 4 off, 2-2-3 and other patterns): photograph the roster, or list the dates — “Shifts on Oct 6, 7, 10 and 11, 7am to 7pm” — and Synote adds each one.</li>
+</ul>
+<p>Synote asks when a repeating shift should stop, so your calendar doesn't fill up with shifts for a job you left months ago.</p>
+
+<h2>Reminders before every shift</h2>
+<p>Add a reminder as you type (“remind me 30 minutes before”), or choose one for the whole batch after you save: 5, 10 or 30 minutes before, or a day ahead. Reminders are delivered on your iPhone even when Synote is closed.</p>
+
+<h2>Ask about your schedule</h2>
+<p>Instead of scrolling through weeks of shifts, just ask:</p>
+<ul>
+  <li>“When do I work next?”</li>
+  <li>“Am I free Saturday afternoon?”</li>
+  <li>“Move Friday's shift to start at 9am.”</li>
+  <li>“How many shifts do I have this week?”</li>
+</ul>
+
+<h2>Who uses Synote for shift work</h2>
+<ul>
+  <li><strong>Nurses and healthcare workers</strong> with day, evening and night rotations.</li>
+  <li><strong>Retail, restaurant and hospitality staff</strong> whose roster changes every week.</li>
+  <li><strong>Warehouse, security and transport workers</strong> on early starts and overnights.</li>
+  <li><strong>Students with part-time jobs</strong> fitting shifts around classes — see the <a href="/ai-planner-for-students/">AI planner for students</a>.</li>
+</ul>
+""",
+  faq=[
+    ("What is the easiest way to add work shifts to my iPhone calendar?", "With Synote you type your shifts in one message — for example “Work Monday, Tuesday and Friday 7am to 3:30pm” — or take a photo of the roster. Synote prepares every shift, shows you a preview and saves them when you tap Save."),
+    ("Can Synote handle night shifts that go past midnight?", "Yes. “Night shift Saturday 10pm to 6am” is saved as one shift that ends at 6am on Sunday, so it appears on the right days with the reminder at the right time."),
+    ("Can I add a rotating shift pattern like 4 on, 4 off?", "Photograph your roster or list the dates of your shifts, and Synote adds each one. Simple weekly and every-other-week patterns can be set up as a single repeating series."),
+    ("Will Synote remind me before each shift?", "Yes. Say it when you add them (“remind me 60 minutes before”) or pick a reminder for all of them after saving. Reminders arrive on your iPhone even when the app is closed."),
+    ("Is Synote free?", "Synote is free to download on the App Store and you can try the AI features for free. A Pro subscription unlocks unlimited use."),
+  ],
+  related=["schedule-maker", "photo-to-calendar", "day-planner-app"],
+)
+
+# ───────────────────────────────────────────────────────────────── 5
+page("schedule-maker",
+  updated="2026-10-05",
+  title="Schedule Maker App: Build a Weekly Schedule Fast | Synote",
+  desc="Make a weekly schedule in seconds. List your classes, work and routines in one message and Synote builds a repeating schedule on your iPhone calendar.",
+  crumb="Schedule maker",
+  h1='The <em>schedule maker</em> that builds your week from one message',
+  lead="Skip the blank template. Write your week the way you'd describe it to a friend — classes, work, gym, family — and Synote turns it into a repeating schedule on your iPhone calendar, with the free time between things clearly marked.",
+  hero_img=None,
+  body="""
+<p>Most schedule makers hand you an empty grid and leave the work to you: drag a block, name it, set the time, copy it to the next day, and repeat. Synote works the other way around. You describe your week, and it builds the schedule.</p>
+
+<h2>Make a weekly schedule in three steps</h2>
+<ol class="g-steps">
+  <li><b>Describe your week</b>Write everything in one message, as a list or a sentence. You can also photograph a schedule you already have on paper.</li>
+  <li><b>Answer a quick question if needed</b>If something is unclear — the end time of a class, whether a routine repeats every week, or when the schedule should stop — Synote asks once instead of guessing.</li>
+  <li><b>Check the preview and save</b>You see every block before anything is written. Tap <strong>Save</strong> and the whole week goes onto your calendar as repeating events.</li>
+</ol>
+
+<h2>Example: a full week in one message</h2>
+<div class="g-quote">“Classes Mon and Wed 9 to 12, work Tue and Thu 1pm to 6pm, gym Mon, Wed and Fri at 6:30am for an hour, Spanish every Saturday 10 to 11:30”</div>
+<p>Synote creates four repeating series — classes, work, gym and Spanish — each on the right days and times. Because they repeat, you set up your week once instead of re-entering it every Sunday.</p>
+
+<h2>Schedules Synote can make</h2>
+<ul>
+  <li><strong>Weekly routines:</strong> the same days every week, or weekdays only.</li>
+  <li><strong>Every other week:</strong> “Team meeting every other Tuesday at 10am” repeats every two weeks.</li>
+  <li><strong>Monthly:</strong> “Book club the first Thursday of every month at 7pm.”</li>
+  <li><strong>One-off plans</strong> mixed in with the routine: “and dentist next Friday at 3pm.”</li>
+  <li><strong>From a photo:</strong> a printed timetable, a roster or a schedule on a whiteboard. <a href="/photo-to-calendar/">See photo to calendar →</a></li>
+</ul>
+
+<h2>See the gaps in your day</h2>
+<p>Synote's day view shows each block with its real start and end time and labels the time in between — “1 h 30 free”, “free after 8:00 PM” — so you can see where a study session, an errand or a break fits before you add it.</p>
+
+<h2>Change it by just saying so</h2>
+<p>Schedules change. Instead of editing every repeat, tell Synote what's different:</p>
+<ul>
+  <li>“Move gym to 7am.”</li>
+  <li>“Cancel Spanish this Saturday.”</li>
+  <li>“Work ends at 5pm on Thursdays now.”</li>
+</ul>
+
+<h2>Template vs. Synote</h2>
+<div class="g-table-wrap"><table class="g-table">
+  <thead><tr><th></th><th>Schedule template</th><th>Synote</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Making the schedule</strong></td><td>Fill in every cell by hand</td><td>One message, a voice note or a photo</td></tr>
+    <tr><td><strong>Next week</strong></td><td>Copy it again</td><td>Repeats automatically</td></tr>
+    <tr><td><strong>Reminders</strong></td><td>None</td><td>Before any event, on your iPhone</td></tr>
+    <tr><td><strong>Clashes</strong></td><td>You spot them yourself</td><td>Checked before saving</td></tr>
+    <tr><td><strong>Changes</strong></td><td>Erase and rewrite</td><td>“Move gym to 7am”</td></tr>
+  </tbody>
+</table></div>
+""",
+  faq=[
+    ("What is the fastest way to make a weekly schedule?", "Describe the whole week in one message — for example “classes Mon and Wed 9 to 12, work Tue and Thu 1 to 6, gym Mon, Wed and Fri at 6:30am”. Synote creates each repeating block on your iPhone calendar and shows a preview before saving."),
+    ("Can Synote make a schedule that repeats every week?", "Yes. Weekly, weekdays-only, every-other-week and monthly schedules are supported. Synote asks when the schedule should end so it doesn't repeat forever."),
+    ("Can I turn a paper schedule into a digital one?", "Yes. Take a photo or a screenshot of it and Synote reads the days, times and places and builds the events."),
+    ("Can I change my schedule later?", "Yes. Tell Synote what changed — “move gym to 7am” or “cancel Spanish this Saturday” — and it updates the events after you confirm."),
+    ("Is Synote free?", "Synote is free to download on the App Store and you can try the AI features for free. A Pro subscription unlocks unlimited use."),
+  ],
+  related=["shift-schedule-app", "day-planner-app", "ai-planner-for-students"],
+)
+
+# ───────────────────────────────────────────────────────────────── 6
+page("day-planner-app",
+  updated="2026-10-05",
+  title="Day Planner App with AI: Plan Your Day by Typing | Synote",
+  desc="A day planner for iPhone that plans for you: type your appointments and to-dos, see the free time between them, and get a reminder before each one.",
+  crumb="Day planner app",
+  h1='A <em>day planner app</em> that fills in your day for you',
+  lead="Tell Synote what today — or tomorrow — looks like. It lays everything out on a timeline, shows you the free time in between, keeps your to-dos separate from your appointments, and reminds you before each one.",
+  hero_img=None,
+  body="""
+<p>A paper day planner works because writing your day down makes it real. The problem is the writing: every appointment, every errand, every time, by hand, every morning. Synote keeps the habit and drops the busywork.</p>
+
+<h2>Plan your day in one message</h2>
+<div class="g-quote">“Stand-up 9:30, design review 11 to 12, lunch with Sara at 12:30, pick up groceries after work, call the bank tomorrow morning”</div>
+<p>Synote turns that into a timed plan for today, plus a to-do for tomorrow. Anything with a time becomes an appointment on your timeline. Anything without one — like “call the bank” — becomes a task you can tick off, instead of a fake 9am meeting.</p>
+
+<h2>A timeline that shows your free time</h2>
+<p>Your day appears as a simple timeline: each event with its real start and end time, and the gaps between them labelled — “1 h free”, “30 min free”. At the top, one line sums up the day: how many events, how much is booked, and when you're free after. You can see at a glance where a workout or a focused hour fits.</p>
+
+<h2>Done? One tap.</h2>
+<p>Each item on your day has a circle. Tap it when you're done and it's marked complete. Tap it again if you got it wrong. Tasks without a time stay on your list until you tick them off, so nothing quietly disappears at midnight.</p>
+
+<h2>Reminders without the setup</h2>
+<p>Say it while you plan — “dentist Thursday at 3pm, remind me 30 minutes before” — or choose a reminder for the whole day after you save: 5, 10 or 30 minutes before, or a day ahead. Reminders arrive on your iPhone even when Synote is closed.</p>
+
+<h2>Plan tomorrow tonight</h2>
+<p>The calmest mornings are planned the night before. Spend one minute before bed:</p>
+<ol class="g-steps">
+  <li><b>Ask what's already there</b>“What do I have tomorrow?” — Synote lists it.</li>
+  <li><b>Add the rest</b>“Gym at 7, dentist at 3, groceries after work.”</li>
+  <li><b>Save and sleep</b>Tomorrow is ready, with reminders set.</li>
+</ol>
+
+<h2>Ask your planner anything</h2>
+<ul>
+  <li>“What's next today?”</li>
+  <li>“Am I free at 4pm?”</li>
+  <li>“Move lunch to 1pm.”</li>
+  <li>“What's my busiest day this week?”</li>
+</ul>
+<p>Want to set up a whole week, not just a day? See the <a href="/schedule-maker/">schedule maker</a>.</p>
+""",
+  faq=[
+    ("What is the best day planner app for iPhone?", "One that takes less time to fill in than the day it plans. Synote lets you type or say your whole day in one message; it builds a timeline with your free time marked, separates to-dos from appointments, and reminds you before each one."),
+    ("Can I plan my day by typing instead of filling in forms?", "Yes. Write it like a message — “stand-up 9:30, lunch with Sara 12:30, groceries after work” — and Synote creates the events and tasks. You see a preview and tap Save."),
+    ("Does Synote separate tasks from appointments?", "Yes. Things with a time become events on your timeline. Things without a time, like “call the bank”, become tasks you can tick off when done."),
+    ("Can Synote remind me before each event?", "Yes — add a reminder as you type, or choose one for everything after saving: 5, 10 or 30 minutes before, or a day ahead."),
+    ("Is Synote free?", "Synote is free to download on the App Store and you can try the AI features for free. A Pro subscription unlocks unlimited use."),
+  ],
+  related=["schedule-maker", "ai-scheduling-assistant", "shift-schedule-app"],
+)
+
+# ───────────────────────────────────────────────────────────────── 7 (FR)
+page("fr/emploi-du-temps",
+  lang="fr",
+  updated="2026-10-05",
+  alternates={"en": "/photo-to-calendar/"},
+  title="Emploi du temps : de la photo à l'agenda iPhone | Synote",
+  desc="Prenez en photo votre emploi du temps (lycée, prépa, fac, BTS, alternance) : Synote crée chaque cours dans votre agenda, avec les salles et les semaines A/B.",
+  crumb="Emploi du temps en photo",
+  h1='Votre <em>emploi du temps en photo</em>, directement dans votre agenda',
+  lead="Prenez en photo ou en capture d'écran votre emploi du temps. Synote lit chaque cours — jour, horaires, salle — et le place dans votre agenda iPhone, avec les répétitions chaque semaine ou une semaine sur deux.",
+  hero_img=None,
+  body="""
+<p>Recopier un emploi du temps dans un agenda, c'est long : trente cours ou plus, chacun avec son jour, son heure de début et de fin, sa salle… et tout est à refaire au semestre suivant. Synote s'en charge à votre place : vous lui donnez une image, il vous rend les cours.</p>
+
+<h2>Comment ça marche</h2>
+<ol class="g-steps">
+  <li><b>Prenez une photo ou une capture d'écran</b>Touchez <strong>+</strong>, puis prenez une photo de l'emploi du temps affiché, ou importez une capture d'écran de Pronote, de l'ENT ou du site de votre école.</li>
+  <li><b>Synote lit chaque cours</b>Il repère la matière, le jour, l'heure de début et de fin, et la salle. Un cours qui revient chaque lundi devient un seul événement répété, pas une pile de copies.</li>
+  <li><b>Il pose seulement les bonnes questions</b>Une grille dit rarement quand commence et finit le semestre. Synote vous demande « À partir de quand ? » au lieu d'inventer une date.</li>
+  <li><b>Vérifiez l'aperçu, touchez Enregistrer</b>Vous voyez tous les cours avant que quoi que ce soit soit ajouté. Rien n'est enregistré sans votre accord.</li>
+</ol>
+
+<h2>Semaines A et B, groupes et alternance</h2>
+<ul>
+  <li><strong>Semaines A/B :</strong> dites simplement « la semaine prochaine est une semaine A ». Les cours de la semaine A et de la semaine B se répètent chacun une semaine sur deux.</li>
+  <li><strong>Un bloc par matière :</strong> chaque cours garde son nom et sa salle — « Physique-Chimie, Labo 1 » — pour que votre journée soit lisible d'un coup d'œil.</li>
+  <li><strong>Alternance école / entreprise :</strong> photographiez le calendrier d'alternance et Synote place les journées « Entreprise » et « Formation ».</li>
+  <li><strong>Changements en cours d'année :</strong> écrivez « le TP de chimie passe à 14h » et Synote met à jour.</li>
+</ul>
+
+<h2>Ajoutez vos devoirs et vos contrôles en une phrase</h2>
+<div class="g-quote">« Contrôle de maths jeudi 15 octobre à 10h, exposé d'histoire à rendre le 2 novembre »</div>
+<p>Synote crée le contrôle à son horaire et l'exposé comme une tâche avec une date limite, que vous cochez une fois terminée. S'il manque une information, il vous la demande.</p>
+
+<h2>Des rappels avant chaque cours</h2>
+<p>Après l'enregistrement, Synote propose un rappel pour tous les cours d'un coup : 5, 10 ou 30 minutes avant, ou la veille pour un contrôle. Les rappels arrivent sur votre iPhone même quand l'application est fermée.</p>
+
+<h2>Conseils pour une photo réussie</h2>
+<ul>
+  <li>Cadrez la grille entière, bien de face, sans reflet.</li>
+  <li>Une capture d'écran est encore mieux qu'une photo d'écran.</li>
+  <li>Si votre établissement a des semaines A et B, envoyez la grille complète et dites quelle semaine commence.</li>
+  <li>Si une case est coupée ou illisible, Synote vous pose la question plutôt que de deviner.</li>
+</ul>
+
+<h2>Synote parle français</h2>
+<p>Écrivez comme vous parlez : Synote comprend et répond en <strong>français</strong>, ainsi qu'en anglais, en japonais et en persan. Les horaires « 8h-10h » et les jours « lun., mar. » sont lus tels quels.</p>
+""",
+  faq=[
+    ("Comment mettre mon emploi du temps dans l'agenda de mon iPhone ?", "Avec Synote, touchez + puis prenez une photo de votre emploi du temps ou importez une capture d'écran. Synote crée chaque cours avec son jour, ses horaires et sa salle, puis vous montre un aperçu avant d'enregistrer."),
+    ("Synote gère-t-il les semaines A et B ?", "Oui. Indiquez quelle semaine commence (par exemple « la semaine prochaine est une semaine A ») et les cours de chaque semaine se répètent une semaine sur deux."),
+    ("Ça marche avec une capture d'écran de Pronote ou de l'ENT ?", "Oui. Une capture d'écran nette fonctionne aussi bien qu'une photo, souvent mieux."),
+    ("Synote ajoute-t-il des cours sans me demander ?", "Non. Vous voyez toujours un aperçu, et rien n'est enregistré tant que vous n'avez pas touché Enregistrer."),
+    ("Synote est-il gratuit ?", "Synote est gratuit à télécharger sur l'App Store et vous pouvez essayer les fonctions d'IA gratuitement. L'abonnement Pro débloque une utilisation illimitée."),
+  ],
+  related=["photo-to-calendar", "ai-planner-for-students", "schedule-maker"],
 )
 
 CARD = {
   "photo-to-calendar": ("Photo to calendar", "Snap a timetable, roster or poster and get the events."),
   "ai-planner-for-students": ("AI planner for students", "Build your semester from one photo of your timetable."),
   "ai-scheduling-assistant": ("AI scheduling assistant", "Plan your day from one sentence — type, speak or snap."),
+  "shift-schedule-app": ("Shift schedule app", "Add a week of shifts in one message — night shifts included."),
+  "schedule-maker": ("Schedule maker", "Build a repeating weekly schedule from one message."),
+  "day-planner-app": ("Day planner app", "Plan your day by typing and see your free time."),
+  "fr/emploi-du-temps": ("Emploi du temps en photo (FR)", "Votre emploi du temps en photo, directement dans votre agenda."),
+}
+# cards as shown on a French page
+CARD_FR = {
+  "photo-to-calendar": ("Photo to calendar (en anglais)", "Affiches, plannings de travail, invitations : tout en photo."),
+  "ai-planner-for-students": ("AI planner for students (en anglais)", "Tout le semestre à partir d'une photo."),
+  "schedule-maker": ("Schedule maker (en anglais)", "Une semaine complète en un seul message."),
+}
+
+# interface text per language (English output is unchanged)
+T = {
+  "en": dict(home="Home", guides="Guides", get="Get the app", sub="Free to download · iPhone · English, Français, 日本語, فارسی",
+             faq="Frequently asked questions", related="Related guides", cta_h="Try Synote free on iPhone",
+             cta_p="Type it, say it or snap it — Synote plans it.", store="Download on the App Store",
+             privacy="Privacy", contact="Contact", og="en_US"),
+  "fr": dict(home="Accueil", guides="Guides", get="Télécharger", sub="Gratuit · iPhone · Français, English, 日本語, فارسی",
+             faq="Questions fréquentes", related="Guides associés", cta_h="Essayez Synote gratuitement sur iPhone",
+             cta_p="Écrivez-le, dites-le ou prenez-le en photo — Synote s'occupe du reste.", store="Obtenir sur l'App Store",
+             privacy="Confidentialité", contact="Contact", og="fr_FR"),
 }
 
 def esc(s): return html.escape(s, quote=True)
 def strip(s): return re.sub(r"<[^>]+>", "", s)
 
-def head(title, desc, url, image, ld):
+def head(title, desc, url, image, ld, lang="en", alts=""):
+    t = T[lang]
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+{alts}<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#B4512D">
 <meta name="apple-itunes-app" content="app-id=6761725997">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -233,49 +496,58 @@ def head(title, desc, url, image, ld):
 <header class="g-head"><div class="g-head-in">
   <a class="g-logo" href="/"><img src="/Synotelogo.png" alt="" width="30" height="30">Synote</a>
   <nav class="g-nav" aria-label="Main">
-    <a href="/">Home</a>
-    <a href="/guides/">Guides</a>
-    <a class="g-btn" href="{APP}">Get the app</a>
+    <a href="/">{t["home"]}</a>
+    <a href="/guides/">{t["guides"]}</a>
+    <a class="g-btn" href="{APP}">{t["get"]}</a>
   </nav>
 </div></header>
 """
 
-FOOT = f"""
+def foot(lang="en"):
+    t = T[lang]
+    return f"""
 <footer class="g-foot">
   <a class="g-logo" href="/" style="font-size:15px"><img src="/Synotelogo.png" alt="" width="22" height="22" style="width:22px;height:22px">Synote</a>
   <span>© 2026 Zenith Software Corp</span>
   <span class="g-sp"></span>
-  <a href="/guides/">Guides</a>
-  <a href="/privacy">Privacy</a>
-  <a href="mailto:support@synote.ca">Contact</a>
+  <a href="/guides/">{t["guides"]}</a>
+  <a href="/privacy">{t["privacy"]}</a>
+  <a href="mailto:support@synote.ca">{t["contact"]}</a>
 </footer>
 </body>
 </html>
 """
 
-def cta():
+def cta(lang="en"):
+    t = T[lang]
     return f"""
 <section class="g-cta">
   <img src="/Synotelogo.png" alt="Synote logo" width="64" height="64" loading="lazy">
-  <h2>Try Synote free on iPhone</h2>
-  <p>Type it, say it or snap it — Synote plans it.</p>
-  <a class="g-btn big" href="{APP}">{APPLE} Download on the App Store</a>
+  <h2>{t["cta_h"]}</h2>
+  <p>{t["cta_p"]}</p>
+  <a class="g-btn big" href="{APP}">{APPLE} {t["store"]}</a>
 </section>
 """
 
 def build(slug, p):
+    lang = p.get("lang", "en"); t = T[lang]
     url = f"{SITE}/{slug}/"
+    alts = ""
+    if p.get("alternates"):
+        pairs = dict(p["alternates"]); pairs[lang] = f"/{slug}/"
+        alts = "".join(f'<link rel="alternate" hreflang="{k}" href="{SITE}{v}">\n' for k, v in sorted(pairs.items()))
+        alts += f'<link rel="alternate" hreflang="x-default" href="{SITE}{pairs["en"]}">\n'
     app_ld = {"@type": "MobileApplication", "name": "Synote", "operatingSystem": "iOS",
               "applicationCategory": "ProductivityApplication", "installUrl": APP,
               "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "WebPage", "@id": url, "url": url, "name": p["title"], "description": p["desc"],
-         "inLanguage": "en", "dateModified": UPDATED, "isPartOf": {"@type": "WebSite", "name": "Synote", "url": SITE + "/"},
+         "inLanguage": lang, "dateModified": p.get("updated", UPDATED), "isPartOf": {"@type": "WebSite", "name": "Synote", "url": SITE + "/"},
          "primaryImageOfPage": SITE + (p["hero_img"] or ("/SynoteCaptureCalendar.jpg",))[0], "about": app_ld,
          "publisher": {"@type": "Organization", "name": "Zenith Software Corp", "url": "https://zenithsoftware.ca/"}},
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Synote", "item": SITE + "/"},
-            {"@type": "ListItem", "position": 2, "name": "Guides", "item": SITE + "/guides/"},
+            {"@type": "ListItem", "position": 2, "name": t["guides"], "item": SITE + "/guides/"},
             {"@type": "ListItem", "position": 3, "name": p["crumb"], "item": url}]},
         {"@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in p["faq"]]},
@@ -285,30 +557,31 @@ def build(slug, p):
              if p["hero_img"] else "")
     hero_cls = "g-hero" if p["hero_img"] else "g-hero g-hero-solo"
     faq_html = "\n".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in p["faq"])
-    rel = "\n".join(f'<a href="/{s}/"><b>{CARD[s][0]}</b><span>{CARD[s][1]}</span></a>' for s in p["related"])
-    doc = head(p["title"], p["desc"], url, src, ld) + f"""
+    cards = CARD_FR if lang == "fr" else CARD
+    rel = "\n".join(f'<a href="/{s}/"><b>{cards[s][0]}</b><span>{cards[s][1]}</span></a>' for s in p["related"])
+    doc = head(p["title"], p["desc"], url, src, ld, lang, alts) + f"""
 <section class="{hero_cls}">
   <div>
-    <nav class="g-crumbs" aria-label="Breadcrumb"><a href="/">Synote</a> › <a href="/guides/">Guides</a> › {esc(p["crumb"])}</nav>
+    <nav class="g-crumbs" aria-label="Breadcrumb"><a href="/">Synote</a> › <a href="/guides/">{t["guides"]}</a> › {esc(p["crumb"])}</nav>
     <h1>{p["h1"]}</h1>
     <p class="g-lead">{esc(p["lead"])}</p>
-    <a class="g-btn big" href="{APP}">{APPLE} Download on the App Store</a>
-    <p class="g-sub">Free to download · iPhone · English, Français, 日本語, فارسی</p>
+    <a class="g-btn big" href="{APP}">{APPLE} {t["store"]}</a>
+    <p class="g-sub">{t["sub"]}</p>
   </div>
   {phone}
 </section>
 <main class="g-main">
 {p["body"]}
 <section class="g-faq">
-<h2>Frequently asked questions</h2>
+<h2>{t["faq"]}</h2>
 {faq_html}
 </section>
 </main>
-{cta()}
-<section class="g-related"><h2>Related guides</h2><div class="g-cards">
+{cta(lang)}
+<section class="g-related"><h2>{t["related"]}</h2><div class="g-cards">
 {rel}
 </div></section>
-""" + FOOT
+""" + foot(lang)
     d = os.path.join(OUT, slug); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(doc)
     words = len(strip(p["body"] + " ".join(q + a for q, a in p["faq"])).split())
@@ -334,7 +607,7 @@ def hub():
 {cards}
 </div></section>
 {cta()}
-""" + FOOT
+""" + foot()
     d = os.path.join(OUT, "guides"); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(doc)
     print(f"/guides/  title={len(title)}ch desc={len(desc)}ch")
